@@ -128,6 +128,7 @@ class Curl {
   protected $authHeaders, $userAgentHeader;
 
   public function __construct($channelToken) {
+    \Log::info($channelToken);
     $this->authHeaders = ["Authorization: Bearer " . $channelToken];
     $this->userAgentHeader = ['User-Agent: LINE-BotSDK-PHP/' . '3.1.0'];
   }
@@ -202,7 +203,7 @@ class Curl {
     $body = substr($result, $responseHeaderSize);
 
     isset($options[CURLOPT_INFILE]) && fclose($options[CURLOPT_INFILE]);
-
+    \Log::info($obj->body);
     $obj = new \stdClass();
     $obj->status = $httpStatus;
     $obj->body = $body;
