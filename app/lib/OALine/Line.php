@@ -13,7 +13,7 @@ class Bot {
   }
 
   public function __construct() {
-    $this->channelTokenf = config('line', 'channel', 'token');
+    $this->channelToken = config('line', 'channel', 'token');
     $this->channelSecret = config('line', 'channel', 'secret');
     $this->curl = new Curl($this->channelToken);
   }
