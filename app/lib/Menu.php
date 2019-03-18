@@ -75,46 +75,95 @@ class Menu {
     );
   }
 
-  public static function tour() {
+  public static function tours() {
+    $data = [
+      [
+        'title' => '「魅力歐洲」五星小東歐精選12日～最美咖啡館、童話城堡、多瑙河遊船、集中營、地下鹽礦城之旅[含稅]',
+        'bg' => 'https://de0s2vtm6rzpn.cloudfront.net/4814/width/3_x128.jpg',
+        'agency' => '喜鴻旅遊',
+        'place' => '捷克、匈牙利、斯洛伐克、波蘭、奧地利',
+        'groupDate' => '04月06日 (週六)',
+        'days' => '7',
+        'money' => '87,000',
+      ],
+      [
+        'title' => '【春暖花開】雙雄北陸～賞櫻百選●足羽川．鶴舞公園．兼六園～夢幻合掌村．黑壁古街．惠那峽遊船．溫泉五日【小松】',
+        'bg' => 'https://de0s2vtm6rzpn.cloudfront.net/118809/width/1543195866_x128.jpg',
+        'agency' => '雄獅旅遊',
+        'place' => '日本',
+        'groupDate' => '03月31日 週日',
+        'days' => '5',
+        'money' => '32,900'
+      ],
+      [
+        'title' => '「魅力歐洲」五星小東歐精選12日～最美咖啡館、童話城堡、多瑙河遊船、集中營、地下鹽礦城之旅[含稅]',
+        'bg' => 'https://de0s2vtm6rzpn.cloudfront.net/4814/width/3_x128.jpg',
+        'agency' => '喜鴻旅遊',
+        'place' => '捷克、匈牙利、斯洛伐克、波蘭、奧地利',
+        'groupDate' => '04月06日 (週六)',
+        'days' => '7',
+        'money' => '87,000',
+      ],
+      [
+        'title' => '【春暖花開】雙雄北陸～賞櫻百選●足羽川．鶴舞公園．兼六園～夢幻合掌村．黑壁古街．惠那峽遊船．溫泉五日【小松】',
+        'bg' => 'https://de0s2vtm6rzpn.cloudfront.net/118809/width/1543195866_x128.jpg',
+        'agency' => '雄獅旅遊',
+        'place' => '日本',
+        'groupDate' => '03月31日 週日',
+        'days' => '5',
+        'money' => '32,900'
+      ],
+    ];
+
+    $contents = [];
+    foreach($data as $value) {
+      $contents[] = 
+          Msg\FlexTemplate::bubble([
+            'hero' => Msg\FlexImage::create($value['bg'])->setSize('full')->setAspectRatio('20:13')->setAspectMode('cover')->setAction(Msg\FlexAction::uri('hehe', 'http://google.com')),
+            'body' => Msg\FlexBox::create([
+              Msg\FlexText::create($value['title'])->setWeight('bold')->setSize('md')->setWrap(true),
+              Msg\FlexBox::create([
+                Msg\FlexIcon::create('https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png')->setSize('sm'),
+                Msg\FlexIcon::create('https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png')->setSize('sm'),
+                Msg\FlexIcon::create('https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png')->setSize('sm'),
+                Msg\FlexIcon::create('https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png')->setSize('sm'),
+                Msg\FlexIcon::create('https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gray_star_28.png')->setSize('sm'),
+                Msg\FlexText::create('4.0')->setSize('sm')->setColor('#999999')->setMargin('md')->setFlex(0),
+                Msg\FlexText::create($value['agency'])->setSize('xxs')->setColor('#999999')->setMargin('md')->setFlex(0),
+              ])->setLayout('baseline')->setMargin('md'),
+
+              Msg\FlexBox::create([
+                Msg\FlexBox::create([
+                  Msg\FlexText::create('地點')->setColor('#aaaaaa')->setSize('sm')->setFlex(1),
+                  Msg\FlexText::create($value['place'])->setColor('#666666')->setSize('sm')->setFlex(5)->setWrap(true),
+                ])->setLayout('baseline')->setSpacing('sm'),
+
+                Msg\FlexBox::create([
+                  Msg\FlexText::create('出發')->setColor('#aaaaaa')->setSize('sm')->setFlex(1),
+                  Msg\FlexText::create($value['groupDate'])->setColor('#ea867e')->setSize('sm')->setFlex(5)->setWrap(true),
+                ])->setLayout('baseline')->setSpacing('sm'),
+
+                Msg\FlexBox::create([
+                  Msg\FlexText::create('天數')->setColor('#aaaaaa')->setSize('sm')->setFlex(1),
+                  Msg\FlexText::create($value['days'] . '天')->setColor('#666666')->setSize('sm')->setFlex(5)->setWrap(true),
+                ])->setLayout('baseline')->setSpacing('sm'),
+
+              ])->setLayout('vertical')->setMargin('lg')->setSpacing('sm'),
+
+              Msg\FlexText::create('$' . $value['money'])->setColor('#ff6a6a')->setSize('xxl')->setAlign('end'),
+              Msg\FlexSeparator::create()->setMargin('xs'),
+
+            ])->setLayout('vertical'),
+            'footer' => Msg\FlexBox::create([
+              Msg\FlexButton::create('primary')->setHeight('sm')->setColor('#36b7e8')->setAction(Msg\FlexAction::uri('更多', 'http://google.com')),
+              Msg\FlexSpacer::create('sm')
+            ])->setLayout('vertical')->setSpacing('sm'),
+          ]);
+    }
+
     return (
       Msg::flex()->altText('訂單資料')->template(
-        Msg\FlexTemplate::bubble([
-          'hero' => Msg\FlexImage::create('https://de0s2vtm6rzpn.cloudfront.net/4814/width/3_x128.jpg')->setSize('full')->setAspectRatio('20:13')->setAspectMode('cover')->setAction(Msg\FlexAction::uri('hehe', 'http://google.com')),
-          'body' => Msg\FlexBox::create([
-            Msg\FlexText::create('「魅力歐洲」五星小東歐精選12日～最美咖啡館、童話城堡、多瑙河遊船、集中營、地下鹽礦城之旅[含稅]')->setWeight('bold')->setSize('md')->setWrap(true),
-            Msg\FlexBox::create([
-              Msg\FlexIcon::create('https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png')->setSize('sm'),
-              Msg\FlexIcon::create('https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png')->setSize('sm'),
-              Msg\FlexIcon::create('https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png')->setSize('sm'),
-              Msg\FlexIcon::create('https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png')->setSize('sm'),
-              Msg\FlexIcon::create('https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gray_star_28.png')->setSize('sm'),
-              Msg\FlexText::create('4.0')->setSize('sm')->setColor('#999999')->setMargin('md')->setFlex(0),
-              Msg\FlexText::create('喜鴻旅遊')->setSize('xxs')->setColor('#999999')->setMargin('md')->setFlex(0),
-            ])->setLayout('baseline')->setMargin('md'),
-
-            Msg\FlexBox::create([
-              Msg\FlexBox::create([
-                Msg\FlexText::create('地點')->setColor('#aaaaaa')->setSize('sm')->setFlex(1),
-                Msg\FlexText::create('捷克、匈牙利、斯洛伐克、波蘭、奧地利')->setColor('#666666')->setSize('sm')->setFlex(5)->setWrap(true),
-              ])->setLayout('baseline')->setSpacing('sm'),
-
-              Msg\FlexBox::create([
-                Msg\FlexText::create('出發')->setColor('#aaaaaa')->setSize('sm')->setFlex(1),
-                Msg\FlexText::create('04月06日 (週六)')->setColor('#ea867e')->setSize('sm')->setFlex(5)->setWrap(true),
-              ])->setLayout('baseline')->setSpacing('sm'),
-
-              Msg\FlexBox::create([
-                Msg\FlexText::create('天數')->setColor('#aaaaaa')->setSize('sm')->setFlex(1),
-                Msg\FlexText::create('7天')->setColor('#666666')->setSize('sm')->setFlex(5)->setWrap(true),
-              ])->setLayout('baseline')->setSpacing('sm'),
-
-            ])->setLayout('vertical')->setMargin('lg')->setSpacing('sm')
-          ])->setLayout('vertical'),
-          'footer' => Msg\FlexBox::create([
-            Msg\FlexButton::create('primary')->setHeight('sm')->setColor('#36b7e8')->setAction(Msg\FlexAction::uri('更多', 'http://google.com')),
-            Msg\FlexSpacer::create('sm')
-          ])->setLayout('vertical')->setSpacing('sm'),
-      ]))
-    );
+        Msg\FlexTemplate::carousel()->bubbles($contents)
+    ));
   }
 }

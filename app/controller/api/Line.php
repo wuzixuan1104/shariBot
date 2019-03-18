@@ -26,8 +26,8 @@ class Line extends ApiController {
           if ($logModel->text == 'orderInfo') {
             $msg = Menu::orderInfo();
             $msg->pushTo($speaker);
-          } else if ($logModel->text == 'tour') {
-            $msg = Menu::tour();
+          } else if ($logModel->text == 'tours') {
+            $msg = Menu::tours();
             $msg->pushTo($speaker);
           }
 
