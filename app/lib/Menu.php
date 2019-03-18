@@ -6,7 +6,7 @@ use \OA\Line\Message as Msg;
 
 class Menu {
   public static function orderInfo() {
-    Log::error(123);
+    Log::info(123);
     return (
       Msg::flex()->altText('訂單資料')->template(
         Msg\FlexTemplate::bubble([
