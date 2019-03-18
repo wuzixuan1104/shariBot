@@ -123,7 +123,7 @@ class LineSource extends Model {
       'file'       => ''
     ];
 
-    in_array($event->type(), ['message', 'postback', 'follow', 'join']) && $params['replyToken'] = $event->replyToken() ? $event->replyToken() : '';
+    in_array($event->type(), ['message', 'postback', 'follow', 'join', 'accountLink']) && $params['replyToken'] = $event->replyToken() ? $event->replyToken() : '';
     in_array($event->type(), ['message', 'postback']) && $params['speakerId'] = $speaker ? $speaker->id : 0;
     in_array($event->type(), ['message']) && $params['messageId'] = $event->messageId()  ? $event->messageId()  : '';
 
@@ -174,6 +174,10 @@ class LineSource extends Model {
         $params['data'] = json_encode($event->postbackData());
         $params['params'] = json_encode($event->postbackParams());
         return \M\transaction(function() use (&$log, $params) { return $log = \M\LinePostback::create($params); }) ? $log : null;
+      case $event instanceof \OA\Line\Event\AccountLink:
+        $params['result'] = $event->result();
+        $params['nonce'] = $event->nonce();
+        return \M\transaction(function() use (&$log, $params) { return $log = \M\LineAccountLink::create($params); }) ? $log : null;
     }
   }
 }

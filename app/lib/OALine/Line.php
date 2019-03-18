@@ -13,7 +13,7 @@ class Bot {
   }
 
   public function __construct() {
-    $this->channelToken = config('line', 'channel', 'token');
+    $this->channelTokenf = config('line', 'channel', 'token');
     $this->channelSecret = config('line', 'channel', 'secret');
     $this->curl = new Curl($this->channelToken);
   }
@@ -222,6 +222,7 @@ abstract class Event {
     'postback' => '\\OA\\Line\\Event\\Postback',
     'beacon'   => '\\OA\\Line\\Event\\BeaconDetection',
     'message'  => '\\OA\\Line\\Event\\Message',
+    'accountLink' => '\\OA\\Line\\Event\\AccountLink',
   ];
 
   const MESSAGE_TYPE_CLASS = [
@@ -247,7 +248,7 @@ abstract class Event {
       return $events;
 
     $parsedReq = json_decode($body, true);
-    
+
     if (!array_key_exists('events', $parsedReq))
       return $events;
     
@@ -330,6 +331,14 @@ abstract class Event {
 
   public function roomId() {
     return (string)(array_key_exists('roomId', $this->event['source']) ? $this->event['source']['roomId'] : null);
+  }
+
+  public function result() {
+    return (string)(array_key_exists('result', $this->event['link']) ? $this->event['link']['result'] : null);
+  }
+
+  public function nonce() { 
+    return (string)(array_key_exists('nonce', $this->event['link']) ? $this->event['link']['nonce'] : null);
   }
 
   public function eventSourceId() {

@@ -15,6 +15,7 @@ class Follow extends Event {}
 class Unfollow extends Event {}
 class Join extends Event {}
 class Leave extends Event {}
+class AccountLink extends Event {}
 
 class Postback extends Event {
   public function postbackData() {
