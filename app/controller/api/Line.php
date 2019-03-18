@@ -2,6 +2,7 @@
 
 use \OA\Line\Bot as Bot;
 use \OA\Line\Event as Event;
+use \OA\Line\Curl as Curl;
 use \OA\Line\Message as Message;
 
 class Line extends ApiController {
@@ -26,6 +27,12 @@ class Line extends ApiController {
           if ($logModel->text == 'orderInfo') {
             $msg = Menu::orderInfo();
             $msg->pushTo($speaker);
+          } 
+          if ($logModel->text == 'link') {
+            $obj = new Curl(config('line', 'channel', 'token'));
+            $obj = $obj->post('https://api.line.me/v2/bot/user/' . config('line', 'userId') . '/linkToken');
+            $token = $obj->jsonBody['linkToken'];
+            return Message::text()->text('http://dev.shari.web.tw/admin/login?linkToken=' . $token)->pushTo($speaker);
           }
           break;
 
