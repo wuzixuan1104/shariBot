@@ -119,7 +119,7 @@ class Menu {
     foreach($data as $value) {
       $contents[] = 
           Msg\FlexTemplate::bubble([
-            'hero' => Msg\FlexImage::create($value['bg'])->setSize('full')->setAspectRatio('20:13')->setAspectMode('cover')->setAction(Msg\FlexAction::uri('hehe', 'http://google.com')),
+            'hero' => Msg\FlexImage::create($value['bg'])->setSize('full')->setAspectRatio('20:10')->setAspectMode('cover')->setAction(Msg\FlexAction::uri('hehe', 'http://google.com')),
             'body' => Msg\FlexBox::create([
               Msg\FlexText::create($value['title'])->setWeight('bold')->setSize('md')->setWrap(true),
               Msg\FlexBox::create([
