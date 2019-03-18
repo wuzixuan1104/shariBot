@@ -10,23 +10,25 @@ class Line extends ApiController {
   public function index() {
 
     Load::lib('OALine/Line.php');
-
+    Log::info(1);
     foreach (Event::all() as $event) {
       if (!$source = \M\LineSource::oneByEvent($event))
         continue;
 
       $speaker = \M\LineSource::speakerByEvent($event);
-
+      Log::info(2);
       if (!$logModel = $source->getLogModelByEvent($speaker, $event))
         continue;
 
       switch (get_class($logModel)) {
         case 'M\LineText':
+        Log::info(3);
           Load::lib('Menu.php');
           if ($logModel->text == 'orderInfo') {
             $msg = Menu::orderInfo();
             $msg->pushTo($speaker);
           } else if ($logModel->text == 'tours') {
+            Log::info(4);
             $msg = Menu::tours();
             $msg->pushTo($speaker);
           }
