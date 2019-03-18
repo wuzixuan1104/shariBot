@@ -23,23 +23,25 @@ class Line extends ApiController {
         case 'M\LineText':
           Load::lib('Menu.php');
 
-          if (trim($logModel->text) == 'orderInfo') {
-            $msg = Menu::orderInfo();
-            $msg->pushTo($speaker);
-            Log::info($msg);
-            Log::info($speaker);
-          } else if ($logModel->text == 'tours') {
-            $msg = Menu::tours();
-            $msg->pushTo($speaker);
-          }
+          $msg = Menu::orderInfo();
+          $msg->pushTo($speaker);
+          // if (trim($logModel->text) == 'orderInfo') {
+          //   $msg = Menu::orderInfo();
+          //   $msg->pushTo($speaker);
+          //   Log::info($msg);
+          //   Log::info($speaker);
+          // } else if ($logModel->text == 'tours') {
+          //   $msg = Menu::tours();
+          //   $msg->pushTo($speaker);
+          // }
 
-          if ($logModel->text == 'link') {
-            $curl = new Curl(config('line', 'channel', 'token'));
-            $resp = $curl->post('https://api.line.me/v2/bot/user/' . config('line', 'userId') . '/linkToken');
-            $token = $resp->jsonBody['linkToken'];
+          // if ($logModel->text == 'link') {
+          //   $curl = new Curl(config('line', 'channel', 'token'));
+          //   $resp = $curl->post('https://api.line.me/v2/bot/user/' . config('line', 'userId') . '/linkToken');
+          //   $token = $resp->jsonBody['linkToken'];
 
-            Message::text()->text('http://dev.shari.web.com.tw/admin/login?linkToken=' . $token)->pushTo($speaker);
-          }
+          //   Message::text()->text('http://dev.shari.web.com.tw/admin/login?linkToken=' . $token)->pushTo($speaker);
+          // }
 
         case 'M\LinePostback':
           Load::lib('Postback.php');
