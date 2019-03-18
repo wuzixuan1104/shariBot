@@ -24,6 +24,9 @@ class Line extends ApiController {
         case 'M\LineText':
         Log::info(3);
           Load::lib('Menu.php');
+
+          Log::info($logModel->text);
+          
           if ($logModel->text == 'orderInfo') {
             $msg = Menu::orderInfo();
             $msg->pushTo($speaker);
