@@ -1725,8 +1725,9 @@ class FlexImage extends FlexComponents{
     if(is_string($value)) $this->attrs['backgroundColor'] = $value;
     return $this;
   }
-  public function setAction() {
-
+  public function setAction($value) {
+    $this->attrs['action'] = $value;
+    return $this;
   }
 }
 

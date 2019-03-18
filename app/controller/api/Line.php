@@ -16,7 +16,7 @@ class Line extends ApiController {
         continue;
 
       $speaker = \M\LineSource::speakerByEvent($event);
-    
+
       if (!$logModel = $source->getLogModelByEvent($speaker, $event))
         continue;
 
@@ -25,6 +25,9 @@ class Line extends ApiController {
           Load::lib('Menu.php');
           if ($logModel->text == 'orderInfo') {
             $msg = Menu::orderInfo();
+            $msg->pushTo($speaker);
+          } else if ($logModel->text == 'tour') {
+            $msg = Menu::tour();
             $msg->pushTo($speaker);
           }
 
@@ -35,10 +38,6 @@ class Line extends ApiController {
 
             Message::text()->text('http://dev.shari.web.com.tw/admin/login?linkToken=' . $token)->pushTo($speaker);
           }
-
-
-
-          break;
 
         case 'M\LinePostback':
           Load::lib('Postback.php');
@@ -54,6 +53,12 @@ class Line extends ApiController {
 
           break;
         
+        case 'M\LineAccountLink':
+          if ($logModel->result == 'ok')
+            return Message::text()->text('已將您的網站會員與 Line@ 綁定成功摟！')->pushTo($speaker);
+
+          break;
+
         default:
           # code...
           break;
