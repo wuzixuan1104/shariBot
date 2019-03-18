@@ -18,13 +18,13 @@ class Line extends ApiController {
       $speaker = \M\LineSource::speakerByEvent($event);
       if (!$logModel = $source->getLogModelByEvent($speaker, $event))
         continue;
-
+      
       switch (get_class($logModel)) {
         case 'M\LineText':
           Load::lib('Menu.php');
-
-          $msg = Menu::orderInfo();
-          $msg->pushTo($speaker);
+          return Message::text()->text('工程師還沒有設定相對應的功能！')->pushTo($speaker);
+          // $msg = Menu::orderInfo();
+          // $msg->pushTo($speaker);
           // if (trim($logModel->text) == 'orderInfo') {
           //   $msg = Menu::orderInfo();
           //   $msg->pushTo($speaker);
