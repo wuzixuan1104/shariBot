@@ -34,7 +34,7 @@ class Line extends ApiController {
 
           if ($logModel->text == 'link') {
             $curl = new Curl(config('line', 'channel', 'token'));
-            $resp = $curl->post('https://api.line.me/v2/bot/user/' . config('line', 'userId') . '/linkToken');
+            $resp = $curl->post('https://api.line.me/v2/bot/user/' . $speaker->sid . '/linkToken');
             $token = $resp->jsonBody['linkToken'];
 
             Message::text()->text('https://trip.web.shari.tw/login?linkToken=' . $token)->pushTo($speaker);
