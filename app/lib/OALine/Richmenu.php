@@ -117,7 +117,8 @@ class Generator {
     $lists = Bot::instance()->getRichMenuList();
     if ($lists->status !== 200)
       return false;
-
+    print_r($lists);
+    die;
     $cnt = count($lists->jsonBody['richmenus']) - 1;
     $richmenuId = $lists->jsonBody['richmenus'][$cnt]['richMenuId'];
 
