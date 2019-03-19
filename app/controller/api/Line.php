@@ -12,10 +12,10 @@ class Line extends ApiController {
     Load::lib('OALine/Line.php');
     
     
-    Load::lib('OALine/Richmenu.php');
-    $a = Rich\Generator::create4user(123);
-    print_r($a);
-    die;
+    // Load::lib('OALine/Richmenu.php');
+    // $a = Rich\Generator::create4user(123);
+    // print_r($a);
+    // die;
 
     
 
