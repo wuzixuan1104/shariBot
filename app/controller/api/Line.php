@@ -37,7 +37,7 @@ class Line extends ApiController {
             $resp = $curl->post('https://api.line.me/v2/bot/user/' . config('line', 'userId') . '/linkToken');
             $token = $resp->jsonBody['linkToken'];
 
-            Message::text()->text('http://dev.shari.web.com.tw/admin/login?linkToken=' . $token)->pushTo($speaker);
+            Message::text()->text('https://trip.web.shari.tw/login?linkToken=' . $token)->pushTo($speaker);
           }
 
         case 'M\LinePostback':
