@@ -4,12 +4,18 @@ use \OA\Line\Bot as Bot;
 use \OA\Line\Event as Event;
 use \OA\Line\Curl as Curl;
 use \OA\Line\Message as Message;
+use \OA\Line\Richmenu as Rich;
 
 class Line extends ApiController {
 
   public function index() {
-
     Load::lib('OALine/Line.php');
+
+    Load::lib('OALine/Richmenu.php');
+    $a = Rich\Generator::create4user('U6d8f1b69f80378a358a4a7ec3fa052f3');
+    // $a = Rich\Generator::create();
+    print_r($a);
+    die;
 
     foreach (Event::all() as $event) {
       if (!$source = \M\LineSource::oneByEvent($event))

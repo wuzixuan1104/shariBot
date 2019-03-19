@@ -83,9 +83,9 @@ class Bot {
     return $this->curl->get($this->endpointBase . '/v2/bot/richmenu/list');
   }
   
-  public function createRichMenu(RichMenu $richMenu) {
+  public function createRichMenu(\OA\Line\RichMenu\Richmenu $richMenu) {
     $richMenu && $richMenu = $richMenu->build();
-    return $richMenu ? $this->curl->post($this->endpointBase . '/v2/bot/richmenu', $richMenu->build()) : false;
+    return $richMenu ? $this->curl->post($this->endpointBase . '/v2/bot/richmenu', $richMenu) : false;
   }
 
   public function getRichMenu($richMenuId) {
@@ -101,7 +101,7 @@ class Bot {
   }
 
   public function uploadRichMenuImage($richMenuId, $imagePath, $contentType) {
-    return $this->httpClient->post(
+    return $this->curl->post(
       sprintf('%s/v2/bot/richmenu/%s/content', $this->endpointBase, urlencode($richMenuId)), [
         '__file' => $imagePath,
         '__type' => $contentType,
@@ -422,3 +422,4 @@ abstract class Quick {
     return array_key_exists($name, $funcs) ? call_user_func_array($funcs[$name], $arguments) : false;
   }
 }
+
