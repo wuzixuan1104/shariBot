@@ -1,8 +1,11 @@
 <?php
 
 namespace M;
+use OA\Line\Richmenu\Generator; 
 
 defined('MAPLE') || exit('此檔案不允許讀取！');
+
+\Load::lib ('OALine\Richmenu.php');
 
 class LineSource extends Model {
   // static $hasOne = [];
@@ -55,9 +58,17 @@ class LineSource extends Model {
       'type' => self::TYPE_USER,
     ];
 
-    if (!$speaker = LineSource::one('sid = ?', $params['sid']))
-      if (!transaction(function() use (&$speaker, $params) { return $speaker = LineSource::create($params); }))
+    if (!$speaker = LineSource::one('sid = ?', $params['sid'])) {
+      $trans = transaction(function() use (&$speaker, $params) { 
+        if (!Generator::create4user($params['sid']))
+          \Log::error('建立richmenu失敗:' . $params['sid']);
+
+        return $speaker = LineSource::create($params); 
+      });
+
+      if (!$trans)
         return null;
+    }
     
     $speaker->updateTitle();
 
