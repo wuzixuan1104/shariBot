@@ -10,14 +10,6 @@ class Line extends ApiController {
 
   public function index() {
     Load::lib('OALine/Line.php');
-    
-    
-    Load::lib('OALine/Richmenu.php');
-    $a = Rich\Generator::create4user(123);
-    print_r($a);
-    die;
-
-    
 
     foreach (Event::all() as $event) {
       if (!$source = \M\LineSource::oneByEvent($event))
@@ -34,10 +26,14 @@ class Line extends ApiController {
           if (trim($logModel->text) == 'orderInfo') {
             $msg = Menu::orderInfo();
             $msg->pushTo($speaker);
-            Log::info($msg);
-            Log::info($speaker);
           } else if ($logModel->text == 'tours') {
             $msg = Menu::tours();
+            $msg->pushTo($speaker);
+          } else if ($logModel->text == 'orderList') {
+            $msg = Menu::orderList();
+            $msg->pushTo($speaker);
+          } else if ($logModel->text == 'main') {
+            $msg = Menu::main();
             $msg->pushTo($speaker);
           }
 

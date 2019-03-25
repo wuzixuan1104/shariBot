@@ -8,6 +8,7 @@ return [
     `chatBarText`  varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '下方選單名稱',
     `size`         text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '尺寸',
     `area`         text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '點擊區域',
+    `selected`     enum('yes', 'no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no' COMMENT '是否用戶一進來就要顯示選單',
     `enable`       enum('yes', 'no') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'no' COMMENT '啟用',
     `updateAt`     datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
     `createAt`     datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',

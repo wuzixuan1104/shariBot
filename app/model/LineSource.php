@@ -58,9 +58,13 @@ class LineSource extends Model {
       'type' => self::TYPE_USER,
     ];
 
+    $richmenu = \M\LineRichmenu::one(['where' => ['enable = ?', \M\LineRichmenu::ENABLE_YES]]);
+
     if (!$speaker = LineSource::one('sid = ?', $params['sid'])) {
+      $richmenu && $params['lineRichmenuId'] = $richmenu->id;
+
       $trans = transaction(function() use (&$speaker, $params) { 
-        if (!Generator::create4user($params['sid']))
+        if ($params['lineRichmenuId'] && !Generator::create4user($params['sid'], $params['lineRichmenuId']))
           \Log::error('建立richmenu失敗:' . $params['sid']);
 
         return $speaker = LineSource::create($params); 

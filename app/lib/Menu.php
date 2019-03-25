@@ -166,4 +166,128 @@ class Menu {
         Msg\FlexTemplate::carousel()->bubbles($contents)
     ));
   }
+
+  public static function orderList() {
+    $data = [
+      ['order_code' => '20140926001', 'date' => '2019-03-12 12:23', 'order_sn' => '123'],
+      ['order_code' => '20140926002', 'date' => '2019-03-12 12:23', 'order_sn' => '123'],
+      ['order_code' => '20140926003', 'date' => '2019-03-12 12:23', 'order_sn' => '123'],
+      ['order_code' => '20140926004', 'date' => '2019-03-12 12:23', 'order_sn' => '123'],
+      ['order_code' => '20140926005', 'date' => '2019-03-12 12:23', 'order_sn' => '123'],
+      ['order_code' => '20140926006', 'date' => '2019-03-12 12:23', 'order_sn' => '123'],
+      ['order_code' => '20140926007', 'date' => '2019-03-12 12:23', 'order_sn' => '123'],
+    ];
+
+    $bubbles = array_chunk($data, 3);
+    
+    $contents = [];
+    foreach($bubbles as $bubble) {
+
+      $bubbleContent = [
+        Msg\FlexText::create('Tripresso 旅遊咖')->setWeight('bold')->setColor('#47b0f5')->setSize('xs'),                
+        Msg\FlexText::create('訂單列表')->setWeight('bold')->setMargin('lg')->setSize('xl'),                
+        Msg\FlexBox::create([
+          Msg\FlexText::create('訂單編號')->setColor('#8e8e8e')->setSize('xs')->setAlign('start'),
+          Msg\FlexText::create('操作')->setColor('#8e8e8e')->setSize('xs')->setAlign('end'),
+        ])->setLayout('horizontal')->setMargin('xl'),
+        Msg\FlexSeparator::create()->setMargin('xs'),
+      ];
+
+      foreach($bubble as $item) {
+        $bubbleContent[] = Msg\FlexBox::create([
+          Msg\FlexBox::create([
+            Msg\FlexText::create($item['order_code'])->setSize('md')->setColor('#555555'),
+            Msg\FlexText::create('成立日期：' . $item['date'])->setSize('xxs')->setColor('#bfbfbf'),
+          ])->setLayout('vertical')->setFlex(7),
+          Msg\FlexBox::create([
+            Msg\FlexButton::create('primary')->setHeight('sm')->setColor('#f17171')->setAction(Msg\FlexAction::postback('詳細', [], '點擊「 詳細訂單 : ' . $item['order_code'] . ' 」')),
+          ])->setLayout('vertical')->setFlex(3),
+        ])->setLayout('horizontal')->setMargin('xxl')->setSpacing('sm');
+
+        $bubbleContent[] = Msg\FlexSeparator::create()->setMargin('xl');
+      }
+
+      array_pop($bubbleContent);
+
+      $contents[] = Msg\FlexTemplate::bubble([
+                      'body' => Msg\FlexBox::create($bubbleContent)->setLayout('vertical'),
+                    ]);
+    }
+    return (
+      Msg::flex()->altText('訂單列表')->template(
+        Msg\FlexTemplate::carousel()->bubbles($contents)
+    ));
+  }
+
+  public static function main() {
+    return (
+      Msg::flex()->altText('主功能選單')->template(
+        Msg\FlexTemplate::bubble([
+          'body' => Msg\FlexBox::create([
+            Msg\FlexText::create('Tripresso 旅遊咖')->setWeight('bold')->setColor('#47b0f5')->setSize('xs'),
+            Msg\FlexText::create('會員中心')->setWeight('bold')->setMargin('lg')->setSize('xl')->setColor('#5f5f5f'),
+            Msg\FlexBox::create([
+
+              Msg\FlexText::create('【  訂單專區  】')->setColor('#ffb34b')->setSize('sm')->setAlign('start')->setMargin('xl'),
+              Msg\FlexBox::create([
+                Msg\FlexBox::create([
+                  Msg\FlexText::create('歷年查詢')->setColor('#555555'),
+                  Msg\FlexText::create('至多顯示前 10 筆')->setColor('#bbbbbb')->setSize('xs')->setMargin('xs')
+                ])->setLayout('vertical')->setMargin('lg')->setFlex(7),
+
+                Msg\FlexBox::create([
+                  Msg\FlexSeparator::create()->setMargin('lg'),
+                  Msg\FlexButton::create('primary')->setHeight('sm')->setColor('#f17171')->setAction(Msg\FlexAction::postback('選擇', [], '點擊「 選擇 」'))
+                ])->setLayout('horizontal')->setSpacing('lg')->setFlex(3)
+              ])->setLayout('horizontal')->setMargin('lg'),
+              
+              Msg\FlexSeparator::create()->setMargin('lg'),
+
+              Msg\FlexBox::create([
+                Msg\FlexBox::create([
+                  Msg\FlexText::create('快速查詢')->setColor('#555555'),
+                  Msg\FlexText::create('至多顯示前 10 筆')->setColor('#bbbbbb')->setSize('xs')->setMargin('xs')
+                ])->setLayout('vertical')->setMargin('lg')->setFlex(7),
+
+                Msg\FlexBox::create([
+                  Msg\FlexSeparator::create()->setMargin('lg'),
+                  Msg\FlexButton::create('primary')->setHeight('sm')->setColor('#f17171')->setAction(Msg\FlexAction::postback('選擇', [], '點擊「 選擇 」'))
+                ])->setLayout('horizontal')->setSpacing('lg')->setFlex(3)
+              ])->setLayout('horizontal')->setMargin('lg'),
+
+              //~~~~~~~~~~~~~
+
+              Msg\FlexText::create('【  行程專區  】')->setColor('#ffb34b')->setSize('sm')->setAlign('start')->setMargin('xl'),
+              Msg\FlexBox::create([
+                Msg\FlexBox::create([
+                  Msg\FlexText::create('歷年查詢')->setColor('#555555'),
+                  Msg\FlexText::create('至多顯示前 10 筆')->setColor('#bbbbbb')->setSize('xs')->setMargin('xs')
+                ])->setLayout('vertical')->setMargin('lg')->setFlex(7),
+
+                Msg\FlexBox::create([
+                  Msg\FlexSeparator::create()->setMargin('lg'),
+                  Msg\FlexButton::create('primary')->setHeight('sm')->setColor('#f17171')->setAction(Msg\FlexAction::postback('選擇', [], '點擊「 選擇 」'))
+                ])->setLayout('horizontal')->setSpacing('lg')->setFlex(3)
+              ])->setLayout('horizontal')->setMargin('lg'),
+              
+              Msg\FlexSeparator::create()->setMargin('lg'),
+
+              Msg\FlexBox::create([
+                Msg\FlexBox::create([
+                  Msg\FlexText::create('快速查詢')->setColor('#555555'),
+                  Msg\FlexText::create('至多顯示前 10 筆')->setColor('#bbbbbb')->setSize('xs')->setMargin('xs')
+                ])->setLayout('vertical')->setMargin('lg')->setFlex(7),
+
+                Msg\FlexBox::create([
+                  Msg\FlexSeparator::create()->setMargin('lg'),
+                  Msg\FlexButton::create('primary')->setHeight('sm')->setColor('#f17171')->setAction(Msg\FlexAction::postback('選擇', [], '點擊「 選擇 」'))
+                ])->setLayout('horizontal')->setSpacing('lg')->setFlex(3)
+              ])->setLayout('horizontal')->setMargin('lg'),
+
+            ])->setLayout('vertical')->setMargin('lg'),
+          ])->setLayout('vertical')
+        ])
+      )
+    );
+  }
 }

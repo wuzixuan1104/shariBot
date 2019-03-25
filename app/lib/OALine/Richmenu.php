@@ -113,29 +113,15 @@ class RichmenuAction {
 }
 
 class Generator {
-  public static function create4user($sid) {
-    $lists = Bot::instance()->getRichMenuList();
-    if ($lists->status !== 200)
-      return false;
-    print_r($lists);
-    die;
-    $cnt = count($lists->jsonBody['richmenus']) - 1;
-    $richmenuId = $lists->jsonBody['richmenus'][$cnt]['richMenuId'];
-
+  public static function create4user($sid, $richmenuId) {
     if(!Bot::instance()->linkRichMenu($sid, $richmenuId))
       return false;
     return true;
   }
   
-  public static function create() {
-    if($lists = Bot::instance()->getRichMenuList() && isset($lists['richmenus'])) 
-      foreach($lists['richmenus'] as $list) 
-        if(!Bot::instance()->deleteRichMenu($list['richMenuId']))
-          return false;
-
-
+  public static function create($filePath = '/Users/wuzixuan/www/line@/shariBot/asset/img/richmenu/v1.png') {
     if(!$richMenu = Bot::instance()->createRichMenu(Richmenu::create(
-      RichmenuSize::getHalf(), true, '旅遊咖:' . date('Y-m-d H:i:s'), '來去旅遊摟 GO!',
+      RichmenuSize::getHalf(), true, '旅遊咖 : ' . date('Y-m-d H:i:s'), '來去旅遊摟 GO!',
       [ 
         RichmenuArea::create(RichmenuAreaBounds::create(0, 0, 833, 843), RichmenuAction::postback('精選團旅', ['a', 'b'], '已點擊 精選團旅')),
         RichmenuArea::create(RichmenuAreaBounds::create(625, 0, 833, 843), RichmenuAction::postback('優惠團旅', ['a', 'b'], '已點擊 優惠團旅')),
@@ -145,15 +131,24 @@ class Generator {
     )))
       return false;
 
-    if ($richMenu->status !== 200)
+    if (!$richMenu->isSucceeded)
       return false;
 
-    $richmenuId = $richMenu->jsonBody['richMenuId'];
-    if(!$img = Bot::instance()->uploadRichMenuImage($richmenuId, '/Users/wuzixuan/www/line@/shariBot/asset/img/richmenu/v1.png', 'image/png'))
+    $richMenuId = $richMenu->jsonBody['richMenuId'];
+  
+    if (!$img = Bot::instance()->uploadRichMenuImage($richMenuId, $filePath, 'image/png'))
       return false;
 
-    if($unlink = Bot::instance()->unlinkRichMenu('U6d8f1b69f80378a358a4a7ec3fa052f3') && !Bot::instance()->linkRichMenu('U6d8f1b69f80378a358a4a7ec3fa052f3', $richmenuId))
+    if (!$riches = Bot::instance()->getRichMenuList()) 
       return false;
+
+    foreach ($riches->jsonBody['richmenus'] as $rich) {
+      if ($rich['richMenuId'] == $richMenuId) {
+        if (!\M\LineRichmenu::createNewOne($rich)) {
+          return false;
+        }
+      }
+    }
     return true;
   }
 }
