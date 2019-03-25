@@ -178,7 +178,7 @@ class Menu {
       ['order_code' => '20140926007', 'date' => '2019-03-12 12:23', 'order_sn' => '123'],
     ];
 
-    $bubbles = array_chunk($data, 3);
+    $bubbles = array_chunk($data, 5);
     
     $contents = [];
     foreach($bubbles as $bubble) {
@@ -233,12 +233,12 @@ class Menu {
                 Msg\FlexBox::create([
                   Msg\FlexText::create('歷年查詢')->setColor('#555555'),
                   Msg\FlexText::create('至多顯示前 10 筆')->setColor('#bbbbbb')->setSize('xs')->setMargin('xs')
-                ])->setLayout('vertical')->setMargin('lg')->setFlex(7),
+                ])->setLayout('vertical')->setMargin('lg')->setFlex(6),
 
                 Msg\FlexBox::create([
                   Msg\FlexSeparator::create()->setMargin('lg'),
                   Msg\FlexButton::create('primary')->setHeight('sm')->setColor('#f17171')->setAction(Msg\FlexAction::postback('選擇', [], '點擊「 選擇 」'))
-                ])->setLayout('horizontal')->setSpacing('lg')->setFlex(3)
+                ])->setLayout('horizontal')->setSpacing('lg')->setFlex(4)
               ])->setLayout('horizontal')->setMargin('lg'),
               
               Msg\FlexSeparator::create()->setMargin('lg'),
@@ -247,12 +247,12 @@ class Menu {
                 Msg\FlexBox::create([
                   Msg\FlexText::create('快速查詢')->setColor('#555555'),
                   Msg\FlexText::create('至多顯示前 10 筆')->setColor('#bbbbbb')->setSize('xs')->setMargin('xs')
-                ])->setLayout('vertical')->setMargin('lg')->setFlex(7),
+                ])->setLayout('vertical')->setMargin('lg')->setFlex(6),
 
                 Msg\FlexBox::create([
                   Msg\FlexSeparator::create()->setMargin('lg'),
                   Msg\FlexButton::create('primary')->setHeight('sm')->setColor('#f17171')->setAction(Msg\FlexAction::postback('選擇', [], '點擊「 選擇 」'))
-                ])->setLayout('horizontal')->setSpacing('lg')->setFlex(3)
+                ])->setLayout('horizontal')->setSpacing('lg')->setFlex(4)
               ])->setLayout('horizontal')->setMargin('lg'),
 
               //~~~~~~~~~~~~~
@@ -262,12 +262,12 @@ class Menu {
                 Msg\FlexBox::create([
                   Msg\FlexText::create('歷年查詢')->setColor('#555555'),
                   Msg\FlexText::create('至多顯示前 10 筆')->setColor('#bbbbbb')->setSize('xs')->setMargin('xs')
-                ])->setLayout('vertical')->setMargin('lg')->setFlex(7),
+                ])->setLayout('vertical')->setMargin('lg')->setFlex(6),
 
                 Msg\FlexBox::create([
                   Msg\FlexSeparator::create()->setMargin('lg'),
                   Msg\FlexButton::create('primary')->setHeight('sm')->setColor('#f17171')->setAction(Msg\FlexAction::postback('選擇', [], '點擊「 選擇 」'))
-                ])->setLayout('horizontal')->setSpacing('lg')->setFlex(3)
+                ])->setLayout('horizontal')->setSpacing('lg')->setFlex(4)
               ])->setLayout('horizontal')->setMargin('lg'),
               
               Msg\FlexSeparator::create()->setMargin('lg'),
@@ -276,12 +276,12 @@ class Menu {
                 Msg\FlexBox::create([
                   Msg\FlexText::create('快速查詢')->setColor('#555555'),
                   Msg\FlexText::create('至多顯示前 10 筆')->setColor('#bbbbbb')->setSize('xs')->setMargin('xs')
-                ])->setLayout('vertical')->setMargin('lg')->setFlex(7),
+                ])->setLayout('vertical')->setMargin('lg')->setFlex(6),
 
                 Msg\FlexBox::create([
                   Msg\FlexSeparator::create()->setMargin('lg'),
                   Msg\FlexButton::create('primary')->setHeight('sm')->setColor('#f17171')->setAction(Msg\FlexAction::postback('選擇', [], '點擊「 選擇 」'))
-                ])->setLayout('horizontal')->setSpacing('lg')->setFlex(3)
+                ])->setLayout('horizontal')->setSpacing('lg')->setFlex(4)
               ])->setLayout('horizontal')->setMargin('lg'),
 
             ])->setLayout('vertical')->setMargin('lg'),
