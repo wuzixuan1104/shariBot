@@ -24,7 +24,10 @@ class Fb extends ApiController {
         $mode = $gets['hub_mode'];
         $token = $gets['hub_verify_token'];
         $challenge = $gets['hub_challenge'];
-
+        Log::info($mode);
+        Log::info($token);
+        Log::info($challenge);
+        
         if ($mode && $token) {
             if ($mode === 'subscribe' && $token === config('fb', 'verifyToken')) {
       
