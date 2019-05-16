@@ -33,9 +33,9 @@ class Fb extends ApiController {
              $hub_verify_token = $_REQUEST['hub_verify_token'];
         }
         if ($hub_verify_token === $verify_token) {
-            echo $challenge;
+            return $challenge;
         }
-
+        return true;
         // $bot = new FbBotApp($token);
 
         // Log::info($_REQUEST);
