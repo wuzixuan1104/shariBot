@@ -18,8 +18,30 @@ use pimax\Messages\QuickReplyButton;
 use pimax\Messages\SenderAction;
 
 class Fb extends ApiController {
-    public function index() {
-       
+    public function verify() {
+        $gets = Input::get();
+
+        $mode = $gets['hub_mode'];
+        $token = $gets['hub_verify_token'];
+        $challenge = $gets['hub_challenge'];
+
+        if ($mode && $token) {
+            if ($mode === 'subscribe' && $token === config('fb', 'verifyToken')) {
+      
+                Log::info('WEBHOOK_VERIFIED');
+                return $challenge;
+            } else {
+                return false;                  
+            }
+        }
+    }
+
+    public function webhook() {
+        $posts = Input::post();
+        if (isset($posts['page']) && $posts['page'])
+            return 'EVENT_RECEIVED';
+        return false;
+
         $verify_token = config('fb', 'verifyToken');
         $access_token = config('fb', 'accessToken');
 
