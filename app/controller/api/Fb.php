@@ -27,12 +27,13 @@ class Fb extends ApiController {
         Log::info($mode);
         Log::info($token);
         Log::info($challenge);
-        
+
         if ($mode && $token) {
             if ($mode === 'subscribe' && $token === config('fb', 'verifyToken')) {
       
                 Log::info('WEBHOOK_VERIFIED');
-                return $challenge;
+                echo $challenge;
+                // return $challenge;
             } else {
                 return false;                  
             }
