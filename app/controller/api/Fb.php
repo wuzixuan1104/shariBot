@@ -44,7 +44,10 @@ class Fb extends ApiController {
         $events = $posts['entry'];
         foreach ($events as $event) {
             foreach ($event['messaging'] as $msg) {
+                $sender = $msg['sender']['id'];
                 echo $msg['message'];
+                Log::info('sender: ' . $sender);
+                Log::info('msg: ' . $msg);
             }
         }
     }
