@@ -37,7 +37,8 @@ class Fb extends ApiController {
 
     public function webhook() {
         $posts = json_decode(file_get_contents('php://input'), true);
-
+        Log::info($posts);
+        
         if (!(isset($posts['object']) && $posts['object'] == 'page'))
             return false;
 
