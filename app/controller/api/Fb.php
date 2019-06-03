@@ -17,6 +17,8 @@ use pimax\Messages\QuickReply;
 use pimax\Messages\QuickReplyButton;
 use pimax\Messages\SenderAction;
 
+Load::lib('Curl.php');
+
 class Fb extends ApiController {
     public function verify() {
         $gets = Input::get();
@@ -46,9 +48,11 @@ class Fb extends ApiController {
         foreach ($events as $event) {
             foreach ($event['messaging'] as $msg) {
                 $sender = $msg['sender']['id'];
+                
+
                 echo $msg['message'];
                 Log::info('sender: ' . $sender);
-                Log::info('msg: ' . $msg);
+                Log::info('msg: ' . json_encode($msg));
             }
         }
     }
