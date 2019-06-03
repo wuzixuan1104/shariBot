@@ -6,7 +6,6 @@ sftp-config*
 /env.php
 
 composer.lock
-composer.json
 
 /.release/*
 /doc/*

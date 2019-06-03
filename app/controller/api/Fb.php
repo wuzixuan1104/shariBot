@@ -221,7 +221,9 @@ class Fb extends ApiController {
                         break;
 
                     case 'set menu':
+                        Log::info('set menu1');
                         $bot->deletePersistentMenu();
+                        Log::info('set menu2');
                         $bot->setPersistentMenu([
                             new LocalizedMenu('default', false, [
                                 new MenuItem(MenuItem::TYPE_NESTED, 'My Account', [
@@ -233,6 +235,7 @@ class Fb extends ApiController {
                                 ])
                             ])
                         ]);
+                        Log::info('set menu3');
                         break;
 
                     case 'delete menu':
