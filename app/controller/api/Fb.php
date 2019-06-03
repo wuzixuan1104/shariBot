@@ -38,22 +38,47 @@ class Fb extends ApiController {
     }
 
     public function webhook() {
+        $bot = new FbBotApp(config('fb', 'accessToken'));
+
         $posts = json_decode(file_get_contents('php://input'), true);
-        Log::info($posts);
+        Log::info(json_encode($posts));
         
-        if (!(isset($posts['object']) && $posts['object'] == 'page'))
-            return false;
 
-        $events = $posts['entry'];
-        foreach ($events as $event) {
-            foreach ($event['messaging'] as $msg) {
-                $sender = $msg['sender']['id'];
-                
 
-                echo $msg['message'];
-                Log::info('sender: ' . $sender);
-                Log::info('msg: ' . json_encode($msg));
+        if (!empty($posts['entry'][0]['messaging'])) {
+            foreach ($posts['entry'][0]['messaging'] as $message) {
+                $command = "";
+                if (!empty($message['message'])) {
+                    Log::info('text: ' . $message['message']['text']);
+                    $command = trim($message['message']['text']);
+
+                } else if (!empty($message['postback'])) {
+                    $text = "Postback received: ".trim($message['postback']['payload']);
+                    $bot->send(new Message($message['sender']['id'], $text));
+                    continue;
+                }
+
+                switch ($command) {
+                    case 'text':
+                        $bot->send(new Message($message['sender']['id'], 'This is a simple text message.'));
+                        break;
+                }
             }
         }
+
+        // $events = $posts['entry'];
+        // foreach ($events as $event) {
+        //     foreach ($event['messaging'] as $msg) {
+        //         $sender = $msg['sender']['id'];
+                
+
+        //         echo $msg['message']['text'];
+        //         Log::info('sender: ' . $sender);
+        //         Log::info('msg: ' . json_encode($msg));
+
+
+        //     }
+        // }
     }
+
 }
