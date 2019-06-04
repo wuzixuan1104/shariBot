@@ -17,11 +17,13 @@ class Fb extends ApiController {
   }
 
   public function webhook() {
+    Log::info($this->data);
     foreach ($this->data as $event) {
+      Log::info($event);
+
       if (!(isset($event['message']) || isset($event['postback'])))
         continue;
 
-      Log::info($this->data);
       // $speaker = \M\FbSource::speakerByEvent($event, self::$bot);
       // if (!$logModel = $speaker->getLogModelByEvent($event))
       //   continue;
