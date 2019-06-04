@@ -69,15 +69,13 @@ class FbSource extends Model {
         \Log::info('attach');
 
         $trans = \M\transaction(function() use (&$log, $params, $event) {
-        
           if (!$obj = \M\FbAttach::create($params))
             return false;
 
-          foreach ($event['message']['attachments'] as $attach)
+          foreach ($event['message']['attachments'] as $attach) {
             if (!\M\FbAttachDetail::create(['fbAttachId' => $obj->id, 'type' => $attach['type'], 'url' => isset($attach['payload']['url']) ? $attach['payload']['url'] : '', 'payload' => is_array($attach['payload']) ? json_encode($attach['payload']) : '']))
               return false;
-          
-          \Log::info('finish');
+          }
           return true;
         });
 
