@@ -44,19 +44,18 @@ class Fb extends ApiController {
 
       switch ($logClass) {
         case 'M\FbText':
-          if ($logModel->text == 'menu') {
-              self::$bot->deletePersistentMenu();
-              self::$bot->setPersistentMenu([
-                  new LocalizedMenu('default', false, [
-                      new MenuItem(MenuItem::TYPE_NESTED, '訂單查詢', [
-                          new MenuItem(MenuItem::TYPE_POSTBACK, '點我查詢', json_encode(['order']))
-                      ])
-                  ])
-              ]);
-
-              Log::info('set menu');
-              return;
-          }
+          // if ($logModel->text == 'menu') {
+          //     self::$bot->deletePersistentMenu();
+          //     self::$bot->setPersistentMenu([
+          //         new LocalizedMenu('default', true, [
+          //             new MenuItem(MenuItem::TYPE_NESTED, '訂單相關', [
+          //                 new MenuItem(MenuItem::TYPE_POSTBACK, '歷年訂單查詢', json_encode(['order']))
+          //             ])
+          //         ])
+          //     ]);
+              
+          //     return;
+          // }
           if ($isSys = $logModel->checkSysTxt())
             continue;
 

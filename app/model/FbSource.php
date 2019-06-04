@@ -44,32 +44,14 @@ class FbSource extends Model {
     if (!(!$this->token && $this->menuVersion != self::MENU_VERSION))
       return;
 
-    $bot->deletePersistentMenu();
-    // $bot->setPersistentMenu([
-    //     new LocalizedMenu(self::MENU_VERSION, false, [
-    //         new MenuItem(MenuItem::TYPE_POSTBACK, '訂單查詢', json_encode(['order']))
-    //     ])
-    // ]);
-
-    $bot->setPersistentMenu([
-        new LocalizedMenu('default', false, [
-            new MenuItem(MenuItem::TYPE_NESTED, 'My Account', [
-                new MenuItem(MenuItem::TYPE_NESTED, 'History', [
-                    new MenuItem(MenuItem::TYPE_POSTBACK, 'History Old', 'HISTORY_OLD_PAYLOAD'),
-                    new MenuItem(MenuItem::TYPE_POSTBACK, 'History New', 'HISTORY_NEW_PAYLOAD')
-                ]),
-                new MenuItem(MenuItem::TYPE_POSTBACK, 'Contact Info', 'CONTACT_INFO_PAYLOAD')
+    self::$bot->deletePersistentMenu();
+    self::$bot->setPersistentMenu([
+        new LocalizedMenu('default', true, [
+            new MenuItem(MenuItem::TYPE_NESTED, '訂單相關', [
+                new MenuItem(MenuItem::TYPE_POSTBACK, '歷年訂單查詢', json_encode(['order']))
             ])
         ])
     ]);
-
-    // $bot->setPersistentMenu([
-    //     new LocalizedMenu(self::MENU_VERSION, false, [
-    //         new MenuItem(MenuItem::TYPE_NESTED, '訂單查詢', [
-    //             new MenuItem(MenuItem::TYPE_POSTBACK, '查詢', json_encode(['order']))
-    //         ])
-    //     ])
-    // ]);
 
     \Log::info('set menu');
 
