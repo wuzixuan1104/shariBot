@@ -21,6 +21,7 @@ class Fb extends ApiController {
       if (!(isset($event['message']) || isset($event['postback'])))
         continue;
 
+      Log::info($this->data);
       $speaker = \M\FbSource::speakerByEvent($event, self::$bot);
       if (!$logModel = $speaker->getLogModelByEvent($event))
         continue;
