@@ -10,10 +10,10 @@ class Menu {
       [
         'elements' => [
           new AccountLink(
-            '您好，' . $source->title . '，綁定官方帳號才可以使用客服諮詢及訂單查詢功能喔！',
-            '(請點選連結進入官方網站進行登入流程)',
+            '您好，' . $source->title . '！需要先綁定官方帳號才能使用客服諮詢及訂單查詢功能喔！',
+            '(請點選進入官方網站操作登入流程)',
             'https://www.tripresso.com/',
-            'https://dszfbyatv8d2t.cloudfront.net/img/logo.svg')
+            Url::base('/asset/img/logo.png'))
         ]
       ]
     );
