@@ -1,6 +1,7 @@
 <?php defined('MAPLE') || exit('此檔案不允許讀取！');
 
 use pimax\FbBotApp;
+use pimax\Messages\Message;
 
 class Fb extends ApiController {
   static $bot = null;
@@ -19,7 +20,7 @@ class Fb extends ApiController {
   public function webhook() {
     foreach ($this->data as $event) {
       Log::info($event);
-      
+
       if (!(isset($event['message']) || isset($event['postback'])))
         continue;
 
@@ -27,7 +28,16 @@ class Fb extends ApiController {
       if (!$logModel = $speaker->getLogModelByEvent($event))
         continue;
 
-      Log::info($logModel);
+      switch (get_class($logModel)) {
+        case 'M\FbText':
+          $bot->send(new Message($logModel->senderId, $logModel->text));
+          break;
+        case 'M\FbPostback':
+          break;
+        case 'M\FbImage':
+          $bot->send(new ImageMessage($logModel->senderId, $logModel->detail->url));
+          break;
+      }
     }
   }
 
