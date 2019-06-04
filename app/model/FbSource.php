@@ -51,7 +51,7 @@ class FbSource extends Model {
     $bot->deletePersistentMenu();
     $bot->setPersistentMenu([
         new LocalizedMenu('default', false, [
-            new MenuItem(MenuItem::TYPE_NESTED, '訂單相關', [
+            new MenuItem(MenuItem::TYPE_NESTED, '點我「 查詢訂單 」', [
                 new MenuItem(MenuItem::TYPE_POSTBACK, '歷年訂單查詢', json_encode(['order']))
             ])
         ])
