@@ -57,15 +57,14 @@ class Fb extends ApiController {
           break;
 
         case 'M\FbPostback':
-        case '\M\FbQuick':
+        case 'M\FbQuick':
           $params = $logModel->payload;
           if (!($params && ($params = json_decode($params, true))))
             continue;
 
           $method = array_shift($params);
-          
-          Load::lib('fb/Postback.php');
 
+          Load::lib('fb/Postback.php');
           if (!($method && method_exists('Postback', $method))) {
             $this->send(new Message($logModel->senderId, '工程師還沒有設定相對應的功能！'));
             continue;
