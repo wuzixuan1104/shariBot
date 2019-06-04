@@ -221,6 +221,9 @@ class Fb extends ApiController {
                         break;
 
                     case 'set menu':
+                        $a = $bot->getPersistentMenu();
+                        Log::info($a);
+                        
                         Log::info('set menu1');
                         $bot->deletePersistentMenu();
                         Log::info('set menu2');
