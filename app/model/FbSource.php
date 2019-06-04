@@ -44,8 +44,9 @@ class FbSource extends Model {
     if (!($this->token && $this->menuVersion != self::MENU_VERSION))
       return;
 
-    self::$bot->deletePersistentMenu();
-    self::$bot->setPersistentMenu([
+    \Log::info('set menu start');
+    $bot->deletePersistentMenu();
+    $bot->setPersistentMenu([
         new LocalizedMenu('default', true, [
             new MenuItem(MenuItem::TYPE_NESTED, '訂單相關', [
                 new MenuItem(MenuItem::TYPE_POSTBACK, '歷年訂單查詢', json_encode(['order']))
@@ -53,7 +54,7 @@ class FbSource extends Model {
         ])
     ]);
 
-    \Log::info('set menu');
+    \Log::info('set menu end');
 
     $this->menuVersion = self::MENU_VERSION;
     return $this->save();
