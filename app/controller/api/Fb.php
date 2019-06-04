@@ -3,6 +3,7 @@
 use pimax\FbBotApp;
 use pimax\Messages\Message;
 use pimax\Messages\ImageMessage;
+use pimax\Messages\SenderAction;
 
 class Fb extends ApiController {
   static $bot = null;
@@ -34,11 +35,45 @@ class Fb extends ApiController {
           if ($isSys = $logModel->checkSysTxt())
             continue;
 
-          if (!\M\FbWait::setTimeStamp($speaker))
+          if (!\M\FbWait::setTimeStamp($speaker)) {
+            self::$bot->send(new SenderAction($logModel->senderId, SenderAction::ACTION_TYPING_ON));
             self::$bot->send(new Message($logModel->senderId, \M\FbWait::MSG));
+            self::$bot->send(new SenderAction($logModel->senderId, SenderAction::ACTION_TYPING_OFF));
+          }
 
           break;
         case 'M\FbPostback':
+          $params = $logModel->payload();
+          if (!($params && ($params = json_decode($params, true))))
+            continue;
+
+          $method = array_shift($params);
+          self::$bot->send(new SenderAction($logModel->senderId, SenderAction::ACTION_TYPING_ON));
+          
+          Load::lib('Postback.php');
+
+          if (!($method && method_exists('Postback', $method))) {
+            self::$bot->send(new Message($logModel->senderId, '工程師還沒有設定相對應的功能！'));
+            
+            self::$bot->send(new SenderAction($logModel->senderId, SenderAction::ACTION_TYPING_OFF));
+            continue;
+          }
+          
+
+          // if (!($method && method_exists('Postback', $method))) {
+          //   Message::text()->text('工程師還沒有設定相對應的功能！')->replyTo($logModel->replyToken);
+          //   continue;
+          // }
+
+          // if (in_array($method, ['order', 'orderDetail']))
+          //   array_push($params, $speaker);
+
+          // if ($msg = call_user_func_array(['Postback', $method], $params)) 
+          //   if ($msg instanceof Message) {
+          //     $msg->replyTo($logModel->replyToken);
+          //   } elseif (is_array($msg) && $msg) {
+          //     Message::pushMulTo($speaker, $msg);
+          //   }
 
           break;
         case 'M\FbAttach':
