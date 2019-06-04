@@ -68,8 +68,8 @@ class FbSource extends Model {
 
       if (isset($event['message']['attachments'])) {
         \Log::info('img');
-        \Log::info($params);
-        $trans = \M\transaction(function() use (&$log, $params, $event) { 
+        $trans = \M\transaction(function() use (&$log, $params, $event) {
+        \Log::info($params); 
           if (!$obj = \M\FbAttach::create($params))
             return false;
 
