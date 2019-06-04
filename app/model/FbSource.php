@@ -49,12 +49,15 @@ class FbSource extends Model {
     ];
 
     if (isset($event['postback'])) {
-      $params['title'] = isset($event['postback']['title']) ? $event['postback']['title'] : '' && ($params['payload'] = is_array($event['postback']['payload']) ? json_encode($event['postback']['payload']) : '');
+      $params['title'] = isset($event['postback']['title']) ? $event['postback']['title'] : '';
+      $params['payload'] = is_array($event['postback']['payload']) ? json_encode($event['postback']['payload']) : '';
       return \M\transaction(function() use (&$log, $params) { return $log = \M\FbPostback::create($params); }) ? $log : null;
     }
 
     if (isset($event['message'])) {
-      $params['mid'] = $event['message']['mid'] && ($params['seq'] = $event['message']['seq']);
+      \Log::info('mid:' . $event['message']['mid']);
+      $params['mid'] = $event['message']['mid'];
+      $params['seq'] = $event['message']['seq'];
       
       if (isset($event['message']['text'])) {
         $params['text'] = $event['message']['text'];
