@@ -44,11 +44,20 @@ class FbSource extends Model {
       return;
 
     $bot->deletePersistentMenu();
+    // $bot->setPersistentMenu([
+    //     new LocalizedMenu(self::MENU_VERSION, false, [
+    //         new MenuItem(MenuItem::TYPE_POSTBACK, '訂單查詢', json_encode(['order']))
+    //     ])
+    // ]);
+
     $bot->setPersistentMenu([
         new LocalizedMenu(self::MENU_VERSION, false, [
-            new MenuItem(MenuItem::TYPE_POSTBACK, '訂單查詢', json_encode(['order']))
+            new MenuItem(MenuItem::TYPE_NESTED, '訂單查詢', [
+                new MenuItem(MenuItem::TYPE_POSTBACK, '查詢', json_encode(['order']))
+            ])
         ])
     ]);
+
     \Log::info('set menu');
   }
 
