@@ -41,7 +41,7 @@ class FbSource extends Model {
 
   public function updateMenu($bot) {
     //之後綁定帳號 token 判斷要改為 true
-    if (!(!$this->token && $this->menuVersion != self::MENU_VERSION))
+    if (!($this->token && $this->menuVersion != self::MENU_VERSION))
       return;
 
     self::$bot->deletePersistentMenu();
@@ -55,8 +55,8 @@ class FbSource extends Model {
 
     \Log::info('set menu');
 
-    // $this->menuVersion = self::MENU_VERSION;
-    // return $this->save();
+    $this->menuVersion = self::MENU_VERSION;
+    return $this->save();
   }
 
   public function getLogModelByEvent($event) {
