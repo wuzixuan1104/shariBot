@@ -55,6 +55,8 @@ class FbSource extends Model {
     }
 
     if (isset($event['message'])) {
+      \Log::info('type: message');
+
       $params['mid'] = $event['message']['mid'];
       $params['seq'] = $event['message']['seq'];
       
