@@ -45,9 +45,6 @@ class FbSource extends Model {
       return;
 
     \Log::info('set menu start');
-
-    \Log::info($bot);
-
     $bot->deletePersistentMenu();
     $bot->setPersistentMenu([
         new LocalizedMenu('default', false, [
@@ -56,11 +53,10 @@ class FbSource extends Model {
             ])
         ])
     ]);
-
     \Log::info('set menu end');
 
-    // $this->menuVersion = self::MENU_VERSION;
-    // return $this->save();
+    $this->menuVersion = self::MENU_VERSION;
+    return $this->save();
   }
 
   public function getLogModelByEvent($event) {
