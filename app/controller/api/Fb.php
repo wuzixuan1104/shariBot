@@ -48,12 +48,8 @@ class Fb extends ApiController {
               self::$bot->deletePersistentMenu();
               self::$bot->setPersistentMenu([
                   new LocalizedMenu('default', false, [
-                      new MenuItem(MenuItem::TYPE_NESTED, 'My Account', [
-                          new MenuItem(MenuItem::TYPE_NESTED, 'History', [
-                              new MenuItem(MenuItem::TYPE_POSTBACK, 'History Old', 'HISTORY_OLD_PAYLOAD'),
-                              new MenuItem(MenuItem::TYPE_POSTBACK, 'History New', 'HISTORY_NEW_PAYLOAD')
-                          ]),
-                          new MenuItem(MenuItem::TYPE_POSTBACK, 'Contact Info', 'CONTACT_INFO_PAYLOAD')
+                      new MenuItem(MenuItem::TYPE_NESTED, '訂單查詢', [
+                          new MenuItem(MenuItem::TYPE_POSTBACK, '點我查詢', json_encode(['order']))
                       ])
                   ])
               ]);
