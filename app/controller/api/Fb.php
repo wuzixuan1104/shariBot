@@ -19,7 +19,7 @@ class Fb extends ApiController {
   public function webhook() {
     foreach ($this->data as $event) {
       Log::info($event);
-
+      
       if (!(isset($event['message']) || isset($event['postback'])))
         continue;
 
