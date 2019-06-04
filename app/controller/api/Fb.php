@@ -2,6 +2,7 @@
 
 use pimax\FbBotApp;
 use pimax\Messages\Message;
+use pimax\Messages\ImageMessage;
 
 class Fb extends ApiController {
   static $bot = null;
