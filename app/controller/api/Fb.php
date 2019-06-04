@@ -21,6 +21,7 @@ class Fb extends ApiController {
   }
 
   public function webhook() {
+    Log::info($this->data);
     foreach ($this->data as $event) {
       Log::info($event);
 

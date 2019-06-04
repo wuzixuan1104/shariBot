@@ -61,7 +61,7 @@ class FbSource extends Model {
             ])
         ])
     ]);
-    
+
     // $bot->setPersistentMenu([
     //     new LocalizedMenu(self::MENU_VERSION, false, [
     //         new MenuItem(MenuItem::TYPE_NESTED, '訂單查詢', [
@@ -71,6 +71,9 @@ class FbSource extends Model {
     // ]);
 
     \Log::info('set menu');
+    
+    // $this->menuVersion = self::MENU_VERSION;
+    // return $this->save();
   }
 
   public function getLogModelByEvent($event) {
