@@ -44,6 +44,7 @@ class Fb extends ApiController {
 
       switch ($logClass) {
         case 'M\FbText':
+          // print_r(self::$bot->getPersistentMenu());die;
           // if ($logModel->text == 'menu') {
           //     self::$bot->deletePersistentMenu();
           //     self::$bot->setPersistentMenu([
