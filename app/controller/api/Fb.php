@@ -5,8 +5,8 @@ use pimax\Messages\Message;
 use pimax\Messages\ImageMessage;
 use pimax\Messages\SenderAction;
 
-use pimax\Menu\MenuItem;
-use pimax\Menu\LocalizedMenu;
+// use pimax\Menu\MenuItem;
+// use pimax\Menu\LocalizedMenu;
 
 class Fb extends ApiController {
   static $bot = null;

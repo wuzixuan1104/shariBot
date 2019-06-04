@@ -18,7 +18,7 @@ class FbSource extends Model {
 
   // static $uploaders = [];
 
-  const MENU_VERSION = 1.0;
+  const MENU_VERSION = 1;
 
   public static function speakerByEvent($event, $bot) {
     if (!$user = $bot->userProfile($event['sender']['id']))
@@ -45,9 +45,12 @@ class FbSource extends Model {
       return;
 
     \Log::info('set menu start');
+
+    \Log::info($bot);
+    
     $bot->deletePersistentMenu();
     $bot->setPersistentMenu([
-        new LocalizedMenu('default', true, [
+        new LocalizedMenu(self::MENU_VERSION, true, [
             new MenuItem(MenuItem::TYPE_NESTED, '訂單相關', [
                 new MenuItem(MenuItem::TYPE_POSTBACK, '歷年訂單查詢', json_encode(['order']))
             ])
@@ -56,8 +59,8 @@ class FbSource extends Model {
 
     \Log::info('set menu end');
 
-    $this->menuVersion = self::MENU_VERSION;
-    return $this->save();
+    // $this->menuVersion = self::MENU_VERSION;
+    // return $this->save();
   }
 
   public function getLogModelByEvent($event) {
