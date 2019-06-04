@@ -2,6 +2,8 @@
 
 use pimax\Messages\StructuredMessage;
 use pimax\Messages\AccountLink;
+use pimax\Messages\QuickReply;
+use pimax\Messages\QuickReplyButton;
 
 class Menu {
   public static function accountLink($source) {
@@ -15,6 +17,14 @@ class Menu {
             'https://www.tripresso.com/',
             Url::base('/asset/img/logo.png'))
         ]
+      ]
+    );
+  }
+
+  public static function quickOrder($source) {
+    return new QuickReply($source->sid, '訂單查詢', 
+      [
+        new QuickReplyButton(QuickReplyButton::TYPE_TEXT, '訂單查詢', json_encode(['order'])),
       ]
     );
   }

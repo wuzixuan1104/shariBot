@@ -7,6 +7,7 @@ use pimax\Messages\SenderAction;
 
 // use pimax\Menu\MenuItem;
 // use pimax\Menu\LocalizedMenu;
+Load::lib('fb/Menu.php');
 
 class Fb extends ApiController {
   static $bot = null;
@@ -44,24 +45,14 @@ class Fb extends ApiController {
 
       switch ($logClass) {
         case 'M\FbText':
-          // print_r(self::$bot->getPersistentMenu());die;
-          // if ($logModel->text == 'menu') {
-          //     self::$bot->deletePersistentMenu();
-          //     self::$bot->setPersistentMenu([
-          //         new LocalizedMenu('default', true, [
-          //             new MenuItem(MenuItem::TYPE_NESTED, '訂單相關', [
-          //                 new MenuItem(MenuItem::TYPE_POSTBACK, '歷年訂單查詢', json_encode(['order']))
-          //             ])
-          //         ])
-          //     ]);
-              
-          //     return;
-          // }
           if ($isSys = $logModel->checkSysTxt())
             continue;
 
           if (!\M\FbWait::setTimeStamp($this->speaker)) 
             $this->send(new Message($this->speaker->sid, \M\FbWait::MSG));
+
+          if (strstr($logModel->text, '訂單') && $msg = Menu::quickOrder($this->speaker))
+            $this->send($msg); 
 
           break;
 

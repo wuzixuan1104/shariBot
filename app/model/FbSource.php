@@ -40,7 +40,6 @@ class FbSource extends Model {
   }
 
   public function updateMenu($bot) {
-    //之後綁定帳號 token 判斷要改為 true
     if (!($this->token && $this->menuVersion != self::MENU_VERSION))
       return;
 
