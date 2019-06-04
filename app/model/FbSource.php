@@ -60,7 +60,7 @@ class FbSource extends Model {
       if (isset($event['message']['text'])) {
         $params['text'] = $event['message']['text'];
         \Log::info($params['text']);
-        
+
         return \M\transaction(function() use (&$log, $params) { return $log = \M\FbText::create($params); }) ? $log : null;
       }
 
@@ -69,6 +69,8 @@ class FbSource extends Model {
           if (!$obj = \M\FbAttach::create($params))
             return false;
 
+          \Log::info('obj:');
+          \Log::info($obj);
           foreach ($event['message']['attachments'] as $attach)
             if (!\M\FbAttachDetail::create(['fbAttachId' => $obj->id, 'type' => $attach['type'], 'url' => isset($attach['payload']['url']) ? $attach['payload']['url'] : '', 'payload' => is_array($attach['payload']) ? json_encode($attach['payload']) : '']))
               return false;
