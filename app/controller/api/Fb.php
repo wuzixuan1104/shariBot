@@ -34,6 +34,11 @@ class Fb extends ApiController {
 
       switch (get_class($logModel)) {
         case 'M\FbText':
+          if ($logModel->text == 'start') {
+            self::$bot->setGetStartedButton(json_encode(['greeting']));
+            Log::info('greeting ok');
+          }
+
           if ($isSys = $logModel->checkSysTxt())
             continue;
 
@@ -42,7 +47,7 @@ class Fb extends ApiController {
 
           break;
         case 'M\FbPostback':
-          $params = $logModel->payload();
+          $params = $logModel->payload;
           if (!($params && ($params = json_decode($params, true))))
             continue;
 
@@ -55,8 +60,8 @@ class Fb extends ApiController {
             continue;
           }
 
-          if (in_array($method, ['order', 'orderDetail']))
-            array_push($params, $this->speaker);
+          // if (in_array($method, ['order', 'orderDetail']))
+          array_push($params, $this->speaker);
 
           if ($msg = call_user_func_array(['Postback', $method], $params)) 
             $this->send($msg);

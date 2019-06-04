@@ -71,7 +71,7 @@ class FbSource extends Model {
     // ]);
 
     \Log::info('set menu');
-    
+
     // $this->menuVersion = self::MENU_VERSION;
     // return $this->save();
   }
@@ -86,7 +86,7 @@ class FbSource extends Model {
 
     if (isset($event['postback'])) {
       $params['title'] = isset($event['postback']['title']) ? $event['postback']['title'] : '';
-      $params['payload'] = is_array($event['postback']['payload']) ? json_encode($event['postback']['payload']) : '';
+      $params['payload'] = $event['postback']['payload'];
       
       return \M\transaction(function() use (&$log, $params) { return $log = \M\FbPostback::create($params); }) ? $log : null;
     }
