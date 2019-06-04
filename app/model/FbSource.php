@@ -51,34 +51,32 @@ class FbSource extends Model {
     if (isset($event['postback'])) {
       $params['title'] = isset($event['postback']['title']) ? $event['postback']['title'] : '';
       $params['payload'] = is_array($event['postback']['payload']) ? json_encode($event['postback']['payload']) : '';
+      
       return \M\transaction(function() use (&$log, $params) { return $log = \M\FbPostback::create($params); }) ? $log : null;
     }
 
     if (isset($event['message'])) {
-      \Log::info('type: message');
 
       $params['mid'] = $event['message']['mid'];
       $params['seq'] = $event['message']['seq'];
       
       if (isset($event['message']['text'])) {
-        \Log::info('type: text');
         $params['text'] = $event['message']['text'];
         return \M\transaction(function() use (&$log, $params) { return $log = \M\FbText::create($params); }) ? $log : null;
       }
 
       if (isset($event['message']['attachments'])) {
-        \Log::info('img');
+        \Log::info('attach');
         $trans = \M\transaction(function() use (&$log, $params, $event) {
-        \Log::info($params); 
+        
           if (!$obj = \M\FbAttach::create($params))
             return false;
 
-          \Log::info('obj:');
-          \Log::info($obj);
           foreach ($event['message']['attachments'] as $attach)
             if (!\M\FbAttachDetail::create(['fbAttachId' => $obj->id, 'type' => $attach['type'], 'url' => isset($attach['payload']['url']) ? $attach['payload']['url'] : '', 'payload' => is_array($attach['payload']) ? json_encode($attach['payload']) : '']))
               return false;
           
+          \Log::info('finish');
           return true;
         });
 
