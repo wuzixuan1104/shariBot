@@ -1,9 +1,11 @@
 <?php
 use pimax\Messages\Message;
 
+Load::lib('fb/Menu.php');
+
 class Postback {
   public static function greeting($source) {
-    return new Message($source->sid, '請先綁定官方帳號才可以使用以下功能！');
+    return Menu::accountLink($source);
   }
 
   public static function order($source) {

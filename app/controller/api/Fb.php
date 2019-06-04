@@ -21,7 +21,7 @@ class Fb extends ApiController {
   }
 
   public function webhook() {
-    Log::info($this->data);
+    // Log::info($this->data);
     foreach ($this->data as $event) {
       Log::info($event);
 
@@ -34,10 +34,10 @@ class Fb extends ApiController {
 
       switch (get_class($logModel)) {
         case 'M\FbText':
-          if ($logModel->text == 'start') {
-            self::$bot->setGetStartedButton(json_encode(['greeting']));
-            Log::info('greeting ok');
-          }
+          // if ($logModel->text == 'start') {
+          //   self::$bot->setGetStartedButton(json_encode(['greeting']));
+          //   Log::info('greeting ok');
+          // }
 
           if ($isSys = $logModel->checkSysTxt())
             continue;
@@ -46,6 +46,7 @@ class Fb extends ApiController {
             $this->send(new Message($this->speaker->sid, \M\FbWait::MSG));
 
           break;
+          
         case 'M\FbPostback':
           $params = $logModel->payload;
           if (!($params && ($params = json_decode($params, true))))
