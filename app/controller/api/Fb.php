@@ -37,7 +37,6 @@ class Fb extends ApiController {
           if (!\M\FbWait::setTimeStamp($speaker))
             self::$bot->send(new Message(\M\FbWait::MSG, $logModel->text));
 
-          
           break;
         case 'M\FbPostback':
 
