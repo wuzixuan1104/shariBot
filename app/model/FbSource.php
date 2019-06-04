@@ -30,8 +30,6 @@ class FbSource extends Model {
       if (!transaction(function() use (&$source, $params) { return $source = FbSource::create($params); }))
         return null;
 
-    \Log::info($source);
-
     if ($source->token && $source->menuVersion != self::MENU_VERSION)
       $source->updateMenu();
 
@@ -44,9 +42,20 @@ class FbSource extends Model {
 
   public function getLogModelByEvent($event) {
     $params = [
-      'lineSourceId'   => $this->id,
-      'timestamp'  => $event->timestamp(),
-      'file'       => ''
+      'fbSourceId'  => $this->id,
+      'timestamp'   => $event['timestamp'],
+      'recipientId' => $event['recipient']['id'],
+      'senderId'    => $event['sender']['id'],
     ];
+
+    if (isset($event['message'])) {
+      $params['mid'] = $event['message']['mid'] && ($params['seq'] = $event['message']['seq']);
+      
+      if (isset($event['message']['text'])) {
+        $params['text'] = $event['message']['text'];
+        return \M\transaction(function() use (&$log, $params) { return $log = \M\FbText::create($params); }) ? $log : null;
+      }
+    }
+
   }
 }

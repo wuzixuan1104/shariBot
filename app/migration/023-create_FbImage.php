@@ -7,10 +7,8 @@ return [
     `timestamp`    varchar(20)  COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '時間',
     `recipientId`  int(11) unsigned NOT NULL COMMENT '收件人 ID',
     `senderId`     int(11) unsigned NOT NULL COMMENT '寄件人 ID',
-    `url`          varchar(50)  COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '圖片連結',
     `mid`          varchar(190)  COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '訊息 ID',
     `seq`          int(11) unsigned NOT NULL COMMENT '序號',
-    `payload`       text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Payload 資料',
     `updateAt`     datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
     `createAt`     datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',
     PRIMARY KEY (`id`)
