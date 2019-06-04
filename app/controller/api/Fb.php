@@ -31,9 +31,16 @@ class Fb extends ApiController {
 
       switch (get_class($logModel)) {
         case 'M\FbText':
-          self::$bot->send(new Message($logModel->senderId, $logModel->text));
+          if ($isSys = $logModel->checkSysTxt())
+            continue;
+
+          if (!\M\FbWait::setTimeStamp($speaker))
+            self::$bot->send(new Message(\M\FbWait::MSG, $logModel->text));
+
+          
           break;
         case 'M\FbPostback':
+
           break;
         case 'M\FbAttach':
           self::$bot->send(new ImageMessage($logModel->senderId, $logModel->detail->url));

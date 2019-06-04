@@ -14,4 +14,16 @@ class FbText extends Model {
   // static $belongToMany = [];
 
   // static $uploaders = [];
+  
+  const SYSTEM_TEXT = [
+    '已點擊「',
+  ];
+
+  public function checkSysTxt() {
+    foreach (self::SYSTEM_TEXT as $txt) {
+      if (strstr($this->text, $txt)) 
+        return true;
+    }
+    return false;
+  }
 }
