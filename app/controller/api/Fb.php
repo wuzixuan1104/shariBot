@@ -11,8 +11,8 @@ class Fb extends ApiController {
 
     if (Router::methodName() == 'webhook') {
       self::$bot = new FbBotApp(config('fb', 'accessToken'));
-      $this->data = json_decode(file_get_contents('php://input'), true, 512, JSON_BIGINT_AS_STRING);
-      $this->data = $this->data['entry'][0]['messaging'];
+      $posts = json_decode(file_get_contents('php://input'), true, 512, JSON_BIGINT_AS_STRING);
+      ($this->data = $posts['entry'][0]['messaging']) || error('發生錯誤！');
     }
   }
 
