@@ -5,6 +5,9 @@ use pimax\Messages\Message;
 use pimax\Messages\ImageMessage;
 use pimax\Messages\SenderAction;
 
+use pimax\Menu\MenuItem;
+use pimax\Menu\LocalizedMenu;
+
 class Fb extends ApiController {
   static $bot = null;
   public $data = [];
@@ -41,11 +44,23 @@ class Fb extends ApiController {
 
       switch ($logClass) {
         case 'M\FbText':
-          // if ($logModel->text == 'start') {
-          //   self::$bot->setGetStartedButton(json_encode(['greeting']));
-          //   Log::info('greeting ok');
-          // }
+          if ($logModel->text == 'menu') {
+              self::$bot->deletePersistentMenu();
+              self::$bot->setPersistentMenu([
+                  new LocalizedMenu('default', false, [
+                      new MenuItem(MenuItem::TYPE_NESTED, 'My Account', [
+                          new MenuItem(MenuItem::TYPE_NESTED, 'History', [
+                              new MenuItem(MenuItem::TYPE_POSTBACK, 'History Old', 'HISTORY_OLD_PAYLOAD'),
+                              new MenuItem(MenuItem::TYPE_POSTBACK, 'History New', 'HISTORY_NEW_PAYLOAD')
+                          ]),
+                          new MenuItem(MenuItem::TYPE_POSTBACK, 'Contact Info', 'CONTACT_INFO_PAYLOAD')
+                      ])
+                  ])
+              ]);
 
+              Log::info('set menu');
+              return;
+          }
           if ($isSys = $logModel->checkSysTxt())
             continue;
 
@@ -68,7 +83,6 @@ class Fb extends ApiController {
             continue;
           }
 
-          // if (in_array($method, ['order', 'orderDetail']))
           array_push($params, $this->speaker);
 
           if ($msg = call_user_func_array(['Postback', $method], $params)) 
