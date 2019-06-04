@@ -22,9 +22,9 @@ class Menu {
   }
 
   public static function quickOrder($source) {
-    return new QuickReply($source->sid, '', 
+    return new QuickReply($source->sid, '系統：點選按鈕快速查詢！', 
       [
-        new QuickReplyButton(QuickReplyButton::TYPE_TEXT, '點我「 查詢訂單 」', json_encode(['order'])),
+        new QuickReplyButton(QuickReplyButton::TYPE_TEXT, '點我「 訂單查詢 」', json_encode(['order'])),
       ]
     );
   }
