@@ -35,11 +35,8 @@ class Fb extends ApiController {
           if ($isSys = $logModel->checkSysTxt())
             continue;
 
-          if (!\M\FbWait::setTimeStamp($speaker)) {
-            self::$bot->send(new SenderAction($logModel->senderId, SenderAction::ACTION_TYPING_ON));
-            self::$bot->send(new Message($logModel->senderId, \M\FbWait::MSG));
-            self::$bot->send(new SenderAction($logModel->senderId, SenderAction::ACTION_TYPING_OFF));
-          }
+          if (!\M\FbWait::setTimeStamp($speaker)) 
+            $this->send($logModel->senderId, new Message($logModel->senderId, \M\FbWait::MSG));
 
           break;
         case 'M\FbPostback':
@@ -48,14 +45,11 @@ class Fb extends ApiController {
             continue;
 
           $method = array_shift($params);
-          self::$bot->send(new SenderAction($logModel->senderId, SenderAction::ACTION_TYPING_ON));
           
           Load::lib('Postback.php');
 
           if (!($method && method_exists('Postback', $method))) {
-            self::$bot->send(new Message($logModel->senderId, '工程師還沒有設定相對應的功能！'));
-            
-            self::$bot->send(new SenderAction($logModel->senderId, SenderAction::ACTION_TYPING_OFF));
+            $this->send($logModel->senderId, new Message($logModel->senderId, '工程師還沒有設定相對應的功能！'));
             continue;
           }
           
@@ -98,5 +92,11 @@ class Fb extends ApiController {
         Log::info('verify failed !'); 
       }
     }
+  }
+
+  private function send($senderId, $msg) {
+    self::$bot->send(new SenderAction($senderId, SenderAction::ACTION_TYPING_ON));
+    self::$bot->send($msg);
+    self::$bot->send(new SenderAction($senderId, SenderAction::ACTION_TYPING_OFF));
   }
 }
