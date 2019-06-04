@@ -13,7 +13,7 @@ class Menu {
             '您好，' . $source->title . '，綁定官方帳號才可以使用客服諮詢及訂單查詢功能喔！',
             '(請點選連結進入官方網站進行登入流程)',
             'https://www.tripresso.com/',
-            'https://www.facebook.com/images/fb_icon_325x325.png')
+            'https://dszfbyatv8d2t.cloudfront.net/img/logo.svg')
         ]
       ]
     );
