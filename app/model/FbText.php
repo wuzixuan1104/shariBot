@@ -17,6 +17,7 @@ class FbText extends Model {
   
   const SYSTEM_TEXT = [
     '已點擊「',
+    '點我「 ',
   ];
 
   public function checkSysTxt() {
