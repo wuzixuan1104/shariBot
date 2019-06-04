@@ -13,8 +13,6 @@ class Fb extends ApiController {
       self::$bot = new FbBotApp(config('fb', 'accessToken'));
       $this->data = json_decode(file_get_contents('php://input'), true);
       $this->data || error('找不到資料！');
-
-      Log::info(json_encode($this->data));
     }
   }
 
@@ -23,6 +21,8 @@ class Fb extends ApiController {
       foreach ($entry['messaging'] as $event) {
         if (!(isset($event['message']) || isset($event['postback'])))
           continue;
+        
+        Log::info(json_encode($event));
         
         $speaker = \M\FbSource::speakerByEvent($event, self::$bot);
         if (!$logModel = $speaker->getLogModelByEvent($event))
