@@ -33,7 +33,7 @@ class FbSource extends Model {
       if (!transaction(function() use (&$source, $params) { return $source = FbSource::create($params); }))
         return null;
 
-    $source->updateMenu();
+    $source->updateMenu($bot);
 
     return $source;
   }
@@ -46,7 +46,7 @@ class FbSource extends Model {
     $bot->deletePersistentMenu();
     $bot->setPersistentMenu([
         new LocalizedMenu(self::MENU_VERSION, false, [
-            new MenuItem(MenuItem::TYPE_POSTBACK, '訂單查詢', json_encode(['order'])))
+            new MenuItem(MenuItem::TYPE_POSTBACK, '訂單查詢', json_encode(['order']))
         ])
     ]);
     \Log::info('set menu');

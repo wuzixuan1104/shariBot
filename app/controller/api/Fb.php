@@ -8,6 +8,7 @@ use pimax\Messages\SenderAction;
 class Fb extends ApiController {
   static $bot = null;
   public $data = [];
+  public $speaker = null;
 
   public function __construct() {
     parent::__construct();
@@ -26,8 +27,8 @@ class Fb extends ApiController {
       if (!(isset($event['message']) || isset($event['postback'])))
         continue;
 
-      $speaker = \M\FbSource::speakerByEvent($event, self::$bot);
-      if (!$logModel = $speaker->getLogModelByEvent($event))
+      $this->speaker = \M\FbSource::speakerByEvent($event, self::$bot);
+      if (!$logModel = $this->speaker->getLogModelByEvent($event))
         continue;
 
       switch (get_class($logModel)) {
@@ -35,8 +36,8 @@ class Fb extends ApiController {
           if ($isSys = $logModel->checkSysTxt())
             continue;
 
-          if (!\M\FbWait::setTimeStamp($speaker)) 
-            $this->send(new Message($speaker->sid, \M\FbWait::MSG));
+          if (!\M\FbWait::setTimeStamp($this->speaker)) 
+            $this->send(new Message($this->speaker->sid, \M\FbWait::MSG));
 
           break;
         case 'M\FbPostback':
@@ -49,19 +50,19 @@ class Fb extends ApiController {
           Load::lib('fb/Postback.php');
 
           if (!($method && method_exists('Postback', $method))) {
-            $this->send($speaker->sid, new Message($speaker->sid, '工程師還沒有設定相對應的功能！'));
+            $this->send(new Message($logModel->senderId, '工程師還沒有設定相對應的功能！'));
             continue;
           }
 
           if (in_array($method, ['order', 'orderDetail']))
-            array_push($params, $speaker);
+            array_push($params, $this->speaker);
 
           if ($msg = call_user_func_array(['Postback', $method], $params)) 
-            $this->send($logModel->senderId, $msg);
+            $this->send($msg);
 
           break;
         case 'M\FbAttach':
-          self::$bot->send(new ImageMessage($logModel->senderId, $logModel->detail->url));
+          $this->send(new ImageMessage($logModel->senderId, $logModel->detail->url));
           break;
       }
     }
@@ -85,8 +86,8 @@ class Fb extends ApiController {
   }
 
   private function send($msg) {
-    self::$bot->send(new SenderAction($msg->recipient, SenderAction::ACTION_TYPING_ON));
+    self::$bot->send(new SenderAction($this->speaker->sid, SenderAction::ACTION_TYPING_ON));
     self::$bot->send($msg);
-    self::$bot->send(new SenderAction($msg->recipient, SenderAction::ACTION_TYPING_OFF));
+    self::$bot->send(new SenderAction($this->speaker->sid, SenderAction::ACTION_TYPING_OFF));
   }
 }
