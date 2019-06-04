@@ -12,24 +12,19 @@ class Fb extends ApiController {
     if (Router::methodName() == 'webhook') {
       self::$bot = new FbBotApp(config('fb', 'accessToken'));
       $this->data = json_decode(file_get_contents('php://input'), true);
-      $this->data || error('找不到資料！');
-
-      Log::info(json_encode($this->data['entry'][0]['messaging']));
+      $this->data = $this->data['entry'][0]['messaging'] || error('找不到資料！');
     }
   }
 
   public function webhook() {
-    foreach ($this->data['entry'] as $entry) {
-      foreach ($entry['messaging'] as $event) {
-        if (!(isset($event['message']) || isset($event['postback'])))
-          continue;
+    foreach ($this->data as $event) {
+      if (!(isset($event['message']) || isset($event['postback'])))
+        continue;
 
-        $speaker = \M\FbSource::speakerByEvent($event, self::$bot);
+      $speaker = \M\FbSource::speakerByEvent($event, self::$bot);
+      if (!$logModel = $speaker->getLogModelByEvent($event))
+        continue;
 
-        // if (!$logModel = $speaker->getLogModelByEvent($event))
-        //   continue;
-
-      }
     }
   }
 
