@@ -22,9 +22,9 @@ class Fb extends ApiController {
         continue;
 
       Log::info($this->data);
-      $speaker = \M\FbSource::speakerByEvent($event, self::$bot);
-      if (!$logModel = $speaker->getLogModelByEvent($event))
-        continue;
+      // $speaker = \M\FbSource::speakerByEvent($event, self::$bot);
+      // if (!$logModel = $speaker->getLogModelByEvent($event))
+      //   continue;
 
     }
   }
