@@ -36,7 +36,7 @@ class Fb extends ApiController {
             continue;
 
           if (!\M\FbWait::setTimeStamp($speaker)) 
-            $this->send($logModel->senderId, new Message($logModel->senderId, \M\FbWait::MSG));
+            $this->send(new Message($speaker->sid, \M\FbWait::MSG));
 
           break;
         case 'M\FbPostback':
@@ -46,28 +46,18 @@ class Fb extends ApiController {
 
           $method = array_shift($params);
           
-          Load::lib('Postback.php');
+          Load::lib('fb/Postback.php');
 
           if (!($method && method_exists('Postback', $method))) {
-            $this->send($logModel->senderId, new Message($logModel->senderId, '工程師還沒有設定相對應的功能！'));
+            $this->send($speaker->sid, new Message($speaker->sid, '工程師還沒有設定相對應的功能！'));
             continue;
           }
-          
 
-          // if (!($method && method_exists('Postback', $method))) {
-          //   Message::text()->text('工程師還沒有設定相對應的功能！')->replyTo($logModel->replyToken);
-          //   continue;
-          // }
+          if (in_array($method, ['order', 'orderDetail']))
+            array_push($params, $speaker);
 
-          // if (in_array($method, ['order', 'orderDetail']))
-          //   array_push($params, $speaker);
-
-          // if ($msg = call_user_func_array(['Postback', $method], $params)) 
-          //   if ($msg instanceof Message) {
-          //     $msg->replyTo($logModel->replyToken);
-          //   } elseif (is_array($msg) && $msg) {
-          //     Message::pushMulTo($speaker, $msg);
-          //   }
+          if ($msg = call_user_func_array(['Postback', $method], $params)) 
+            $this->send($logModel->senderId, $msg);
 
           break;
         case 'M\FbAttach':
@@ -94,9 +84,9 @@ class Fb extends ApiController {
     }
   }
 
-  private function send($senderId, $msg) {
-    self::$bot->send(new SenderAction($senderId, SenderAction::ACTION_TYPING_ON));
+  private function send($msg) {
+    self::$bot->send(new SenderAction($msg->recipient, SenderAction::ACTION_TYPING_ON));
     self::$bot->send($msg);
-    self::$bot->send(new SenderAction($senderId, SenderAction::ACTION_TYPING_OFF));
+    self::$bot->send(new SenderAction($msg->recipient, SenderAction::ACTION_TYPING_OFF));
   }
 }

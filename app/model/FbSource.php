@@ -4,6 +4,9 @@ namespace M;
 
 defined('MAPLE') || exit('此檔案不允許讀取！');
 
+use pimax\Menu\MenuItem;
+use pimax\Menu\LocalizedMenu;
+
 class FbSource extends Model {
   // static $hasOne = [];
 
@@ -30,14 +33,23 @@ class FbSource extends Model {
       if (!transaction(function() use (&$source, $params) { return $source = FbSource::create($params); }))
         return null;
 
-    if ($source->token && $source->menuVersion != self::MENU_VERSION)
-      $source->updateMenu();
+    $source->updateMenu();
 
     return $source;
   }
 
-  public function updateMenu() {
+  public function updateMenu($bot) {
+    //之後綁定帳號 token 判斷要改為 true
+    if (!(!$this->token && $this->menuVersion != self::MENU_VERSION))
+      return;
 
+    $bot->deletePersistentMenu();
+    $bot->setPersistentMenu([
+        new LocalizedMenu(self::MENU_VERSION, false, [
+            new MenuItem(MenuItem::TYPE_POSTBACK, '訂單查詢', json_encode(['order'])))
+        ])
+    ]);
+    \Log::info('set menu');
   }
 
   public function getLogModelByEvent($event) {
