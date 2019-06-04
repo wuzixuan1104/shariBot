@@ -4,13 +4,13 @@ namespace M;
 
 defined('MAPLE') || exit('此檔案不允許讀取！');
 
-class FbImageDetail extends Model {
+class FbAttachDetail extends Model {
   // static $hasOne = [];
 
   // static $hasMany = [];
 
   static $belongToOne = [
-    'image' => 'FbImage',
+    'attach' => 'FbAttach',
   ];
 
   // static $belongToMany = [];
