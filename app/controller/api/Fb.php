@@ -9,16 +9,24 @@ class Fb extends ApiController {
   public function __construct() {
     parent::__construct();
 
+    // if (Router::methodName() == 'webhook') {
+    //   self::$bot = new FbBotApp(config('fb', 'accessToken'));
+    //   $this->data = json_decode(file_get_contents('php://input'), true);
+    //   $this->data || error('找不到資料！');
+
+    //   Log::info(json_encode($this->data));
+    // }
+  }
+
+  public function webhook() {
     if (Router::methodName() == 'webhook') {
       self::$bot = new FbBotApp(config('fb', 'accessToken'));
       $this->data = json_decode(file_get_contents('php://input'), true);
       $this->data || error('找不到資料！');
 
-      Log::info(json_encode($this->data));
+      Log::info(json_encode($this->data['entry'][0]['messaging']));
     }
-  }
-
-  public function webhook() {
+    
     foreach ($this->data['entry'] as $entry) {
       foreach ($entry['messaging'] as $event) {
         if (!(isset($event['message']) || isset($event['postback'])))
