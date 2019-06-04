@@ -1,7 +1,7 @@
 <?php defined('MAPLE') || exit('此檔案不允許讀取！');
 
 return [
-  'up' => "CREATE TABLE `FbImage` (
+  'up' => "CREATE TABLE `FbAttach` (
     `id`           int(11) unsigned NOT NULL AUTO_INCREMENT,
     `fbSourceId`   int(11) unsigned NOT NULL COMMENT 'Source ID',
     `timestamp`    varchar(20)  COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '時間',
@@ -14,7 +14,7 @@ return [
     PRIMARY KEY (`id`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;",
 
-  'down' => "DROP TABLE `FbImage`;",
+  'down' => "DROP TABLE `FbAttach`;",
 
   'at' => "2019-06-03 16:51:38"
 ];
