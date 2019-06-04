@@ -28,16 +28,18 @@ class Fb extends ApiController {
       if (!$logModel = $speaker->getLogModelByEvent($event))
         continue;
 
+      // print_r($logModel);
+      // print_r(get_class($logModel));
       Log::info($logModel);
       Log::info('Model: ' . get_class($logModel));
       switch (get_class($logModel)) {
         case 'M\FbText':
-          $bot->send(new Message($logModel->senderId, $logModel->text));
+          self::$bot->send(new Message($logModel->senderId, $logModel->text));
           break;
         case 'M\FbPostback':
           break;
         case 'M\FbImage':
-          $bot->send(new ImageMessage($logModel->senderId, $logModel->detail->url));
+          self::$bot->send(new ImageMessage($logModel->senderId, $logModel->detail->url));
           break;
       }
     }
