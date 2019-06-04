@@ -47,10 +47,10 @@ class FbSource extends Model {
     \Log::info('set menu start');
 
     \Log::info($bot);
-    
+
     $bot->deletePersistentMenu();
     $bot->setPersistentMenu([
-        new LocalizedMenu(self::MENU_VERSION, true, [
+        new LocalizedMenu(self::MENU_VERSION, false, [
             new MenuItem(MenuItem::TYPE_NESTED, '訂單相關', [
                 new MenuItem(MenuItem::TYPE_POSTBACK, '歷年訂單查詢', json_encode(['order']))
             ])
