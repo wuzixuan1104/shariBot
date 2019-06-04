@@ -55,14 +55,12 @@ class FbSource extends Model {
     }
 
     if (isset($event['message'])) {
-      \Log::info('mid:' . $event['message']['mid']);
       $params['mid'] = $event['message']['mid'];
       $params['seq'] = $event['message']['seq'];
       
       if (isset($event['message']['text'])) {
+        \Log::info('type: text');
         $params['text'] = $event['message']['text'];
-        \Log::info($params['text']);
-
         return \M\transaction(function() use (&$log, $params) { return $log = \M\FbText::create($params); }) ? $log : null;
       }
 

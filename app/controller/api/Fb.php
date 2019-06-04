@@ -27,6 +27,7 @@ class Fb extends ApiController {
       if (!$logModel = $speaker->getLogModelByEvent($event))
         continue;
 
+      Log::info($logModel);
     }
   }
 
