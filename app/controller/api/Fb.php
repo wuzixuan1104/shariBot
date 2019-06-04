@@ -21,7 +21,6 @@ class Fb extends ApiController {
   }
 
   public function webhook() {
-    // Log::info($this->data);
     foreach ($this->data as $event) {
       Log::info($event);
 
@@ -32,13 +31,15 @@ class Fb extends ApiController {
       if (!$logModel = $this->speaker->getLogModelByEvent($event))
         continue;
 
+      $logClass = get_class($logModel);
+
       // 檢查是否已綁定會員帳號
-      if ($msg = \M\FbAccountLink::check($speaker, $logClass)) {
+      if ($msg = \M\FbAccountLink::check($this->speaker, $logClass)) {
         $this->send($msg);
         continue;
       }
 
-      switch (get_class($logModel)) {
+      switch ($logClass) {
         case 'M\FbText':
           // if ($logModel->text == 'start') {
           //   self::$bot->setGetStartedButton(json_encode(['greeting']));
