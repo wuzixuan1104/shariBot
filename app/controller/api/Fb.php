@@ -57,6 +57,7 @@ class Fb extends ApiController {
           break;
 
         case 'M\FbPostback':
+        case '\M\FbQuick':
           $params = $logModel->payload;
           if (!($params && ($params = json_decode($params, true))))
             continue;

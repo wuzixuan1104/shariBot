@@ -69,23 +69,25 @@ class FbSource extends Model {
     if (isset($event['postback'])) {
       $params['title'] = isset($event['postback']['title']) ? $event['postback']['title'] : '';
       $params['payload'] = $event['postback']['payload'];
-      
       return \M\transaction(function() use (&$log, $params) { return $log = \M\FbPostback::create($params); }) ? $log : null;
     }
 
     if (isset($event['message'])) {
-
       $params['mid'] = $event['message']['mid'];
       $params['seq'] = $event['message']['seq'];
       
+      if (isset($event['quick_reply'])) {
+        $params['title'] = isset($event['message']['text']) ? $event['message']['text'] : '';
+        $params['payload'] = $event['quick_reply']['payload'];
+        return \M\transaction(function() use (&$log, $params) { return $log = \M\FbQuick::create($params); }) ? $log : null;
+      }
+
       if (isset($event['message']['text'])) {
         $params['text'] = $event['message']['text'];
         return \M\transaction(function() use (&$log, $params) { return $log = \M\FbText::create($params); }) ? $log : null;
       }
 
       if (isset($event['message']['attachments'])) {
-        \Log::info('attach');
-
         $trans = \M\transaction(function() use (&$log, $params, $event) {
           if (!$log = \M\FbAttach::create($params))
             return false;
