@@ -27,6 +27,7 @@ class FbSource extends Model {
     $params = [
       'sid' => $event['sender']['id'],
       'title' => $user->getFirstName() . ' ' . $user->getLastName(),
+      'avatar' => $user->getPicture()
     ];
 
     if (!$source = FbSource::one('sid = ?', $params['sid']))

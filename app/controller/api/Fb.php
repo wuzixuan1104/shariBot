@@ -32,6 +32,12 @@ class Fb extends ApiController {
       if (!$logModel = $this->speaker->getLogModelByEvent($event))
         continue;
 
+      // 檢查是否已綁定會員帳號
+      if ($msg = \M\FbAccountLink::check($speaker, $logClass)) {
+        $this->send($msg);
+        continue;
+      }
+
       switch (get_class($logModel)) {
         case 'M\FbText':
           // if ($logModel->text == 'start') {
@@ -46,7 +52,7 @@ class Fb extends ApiController {
             $this->send(new Message($this->speaker->sid, \M\FbWait::MSG));
 
           break;
-          
+
         case 'M\FbPostback':
           $params = $logModel->payload;
           if (!($params && ($params = json_decode($params, true))))
