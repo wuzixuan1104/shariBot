@@ -2,8 +2,6 @@
 
 use pimax\FbBotApp;
 
-Load::lib('Curl.php');
-
 class Fb extends ApiController {
   static $bot = null;
   public $data = [];
@@ -23,8 +21,13 @@ class Fb extends ApiController {
   public function webhook() {
     foreach ($this->data['entry'] as $entry) {
       foreach ($entry['messaging'] as $event) {
+        if (!(isset($event['message']) || isset($event['postback'])))
+          continue;
         
-        Log::info($event);
+        $speaker = \M\FbSource::speakerByEvent($event, self::$bot);
+        // if (!$logModel = $speaker->getLogModelByEvent($event))
+        //   continue;
+
       }
     }
   }
