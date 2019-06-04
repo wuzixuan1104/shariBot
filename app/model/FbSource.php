@@ -18,20 +18,16 @@ class FbSource extends Model {
   const MENU_VERSION = 1.0;
 
   public static function speakerByEvent($event, $bot) {
-    \Log::info('user');
     if (!$user = $bot->userProfile($event['sender']['id']))
       return null;
 
-    \Log::info($user);
     $params = [
       'sid' => $event['sender']['id'],
       'title' => $user->getFirstName() . ' ' . $user->getLastName(),
     ];
 
-    \Log::info($params);
-
     if (!$source = FbSource::one('sid = ?', $params['sid']))
-      if (!transaction(function() use (&$source, $params) { return $source = LineSource::create($params); }))
+      if (!transaction(function() use (&$source, $params) { return $source = FbSource::create($params); }))
         return null;
 
     \Log::info($source);
