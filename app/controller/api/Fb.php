@@ -70,9 +70,10 @@ class Fb extends ApiController {
             continue;
           }
 
+          in_array($method, ['order', 'orderDetail']) && array_push($params, $logModel);
           array_push($params, $this->speaker);
 
-          if ($msg = call_user_func_array(['Postback', $method], $params)) 
+          if ($msg = call_user_func_array(['Postback', $method], $params))
             $this->send($msg);
 
           break;
@@ -101,8 +102,12 @@ class Fb extends ApiController {
   }
 
   private function send($msg) {
-    self::$bot->send(new SenderAction($this->speaker->sid, SenderAction::ACTION_TYPING_ON));
-    self::$bot->send($msg);
-    self::$bot->send(new SenderAction($this->speaker->sid, SenderAction::ACTION_TYPING_OFF));
+    !is_array($msg) && ($msgs[] = $msg) || ($msgs = $msg);
+
+    foreach ($msgs as $msg) {
+      self::$bot->send(new SenderAction($this->speaker->sid, SenderAction::ACTION_TYPING_ON));
+      self::$bot->send($msg);
+      self::$bot->send(new SenderAction($this->speaker->sid, SenderAction::ACTION_TYPING_OFF));
+    }
   }
 }

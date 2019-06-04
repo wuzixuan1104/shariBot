@@ -28,4 +28,13 @@ class Menu {
       ]
     );
   }
+
+  public static function quickSolve($id, $source) {
+    return new QuickReply($source->sid, '系統：請問是否已解決您的問題？', 
+      [
+        new QuickReplyButton(QuickReplyButton::TYPE_TEXT, '是', json_encode(['quickSolve', $id, 1])),
+        new QuickReplyButton(QuickReplyButton::TYPE_TEXT, '否', json_encode(['quickSolve', $id, 0])),
+      ]
+    );
+  }
 }
