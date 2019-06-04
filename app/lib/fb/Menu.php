@@ -22,7 +22,7 @@ class Menu {
   }
 
   public static function quickOrder($source) {
-    return new QuickReply($source->sid, '訂單查詢', 
+    return new QuickReply($source->sid, '', 
       [
         new QuickReplyButton(QuickReplyButton::TYPE_TEXT, '點我「 查詢訂單 」', json_encode(['order'])),
       ]
