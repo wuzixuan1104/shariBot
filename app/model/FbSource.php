@@ -75,10 +75,10 @@ class FbSource extends Model {
     if (isset($event['message'])) {
       $params['mid'] = $event['message']['mid'];
       $params['seq'] = $event['message']['seq'];
-      
-      if (isset($event['quick_reply'])) {
+
+      if (isset($event['message']['quick_reply'])) {
         $params['title'] = isset($event['message']['text']) ? $event['message']['text'] : '';
-        $params['payload'] = $event['quick_reply']['payload'];
+        $params['payload'] = $event['message']['quick_reply']['payload'];
         return \M\transaction(function() use (&$log, $params) { return $log = \M\FbQuick::create($params); }) ? $log : null;
       }
 
