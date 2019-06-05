@@ -66,6 +66,12 @@ class FbSource extends Model {
       'senderId'    => $event['sender']['id'],
     ];
 
+    if (isset($event['account_linking'])) {
+      $params['status'] = $event['account_linking']['status'];
+      $params['authCode'] = isset($event['account_linking']['authorization_code']) ? $event['account_linking']['authorization_code'] : '';
+      return \M\transaction(function() use (&$log, $params) { return $log = \M\FbAccountLink::create($params); }) ? $log : null;
+    }
+
     if (isset($event['postback'])) {
       $params['title'] = isset($event['postback']['title']) ? $event['postback']['title'] : '';
       $params['payload'] = $event['postback']['payload'];

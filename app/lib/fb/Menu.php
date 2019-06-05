@@ -12,7 +12,7 @@ class Menu {
   public static function accountLink($source) {
     return new StructuredMessage($source->sid, StructuredMessage::TYPE_GENERIC, [
       'elements' => [
-        new AccountLink('您好，' . $source->title . '！需要先綁定官方帳號才能使用客服諮詢及訂單查詢功能喔！', '(請點選進入官方網站操作登入流程)', 'https://www.tripresso.com/?type=fb&avatar=' . urlencode($source->avatar), Url::base('/asset/img/logo.png'))
+        new AccountLink('您好，' . $source->title . '！需要先綁定官方帳號才能使用客服諮詢及訂單查詢功能喔！', '(請點選進入官方網站操作登入流程)', 'https://trip.web.shari.tw/admin/login/?type=fb', Url::base('/asset/img/logo.png'))
       ]
     ]);
   }

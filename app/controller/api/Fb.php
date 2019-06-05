@@ -26,7 +26,7 @@ class Fb extends ApiController {
     foreach ($this->data as $event) {
       Log::info($event);
 
-      if (!(isset($event['message']) || isset($event['postback'])))
+      if (isset($event['delivery']))
         continue;
 
       $this->speaker = \M\FbSource::speakerByEvent($event, self::$bot);
@@ -77,6 +77,15 @@ class Fb extends ApiController {
           break;
         case 'M\FbAttach':
           $this->send(new ImageMessage($logModel->senderId, $logModel->detail->url));
+          break;
+
+        case 'M\FbAccountLink':
+          if ($logModel->status == \M\FbAccountLink::STATUS_LINKED) {
+            // Message::pushMulTo($speaker, Menu::bindSuccess());
+
+            continue;
+          }
+          // Menu::bindFail()->pushTo($speaker);
           break;
       }
     }

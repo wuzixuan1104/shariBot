@@ -6,6 +6,8 @@ defined('MAPLE') || exit('此檔案不允許讀取！');
 
 use pimax\Messages\Message;
 
+\Load::lib('Curl.php');
+
 class FbAccountLink extends Model {
   // static $hasOne = [];
 
@@ -16,6 +18,9 @@ class FbAccountLink extends Model {
   // static $belongToMany = [];
 
   // static $uploaders = [];
+
+  const STATUS_LINKED = 'linked';
+  const STATUS_UNLINKED = 'unlinked';
 
   public static function check($speaker, $logClass) {
     if ($speaker->token || $logClass == 'M\FbAccountLink') 
@@ -32,7 +37,25 @@ class FbAccountLink extends Model {
 
   }
 
-  public static function bind($source, $token) {
-    
+  public static function bind($source, $token, $bot) {
+    if (!$avatar = self::pictureUrl($source))
+      $avatar = '';
+
+    \Log::info('LineAccountLink Token: ' . $token);
+
+    \Load::lib('Curl.php');
+
+    $curl = new \Curl();
+    $resp = $curl->post(config('tripresso', 'crmUrl') . '/api/chat/bind', [
+      'type' => 'line',
+      'token' => $token,
+      'avatar' => $avatar
+    ], ['Content-Type: application/x-www-form-urlencoded']);
+
+    if ($resp->status !== 200)
+        return false;
+
+    if ($source->bindToken($token))
+      $source->updateMenu($bot);
   }
 }
