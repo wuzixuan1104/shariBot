@@ -39,7 +39,7 @@ class Menu {
           new MessageButton(MessageButton::TYPE_POSTBACK, '查看更早之前', 'PAYLOAD 1'),
         ]
       ]
-  );
+    );
   }
 
   public static function quickOrder($source) {

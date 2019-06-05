@@ -18,11 +18,10 @@ class Postback {
 
   public static function quickSolve($id, $bool, $source) {
     //若已經解決，則傳訊息至 CRM 告知問題已解決
-    Log::info('quickSolve', $id, $bool);
     \M\transaction(function() use ($id, $bool) { 
       return \M\FbQuickDetail::create(['fbQuickId' => $id, 'reply' => $bool]); 
     });
-    Log::info('quickSolve success', $id, $bool);
+
     switch($bool) {
       case 0:
         return new Message($source->sid, '請稍候，客服會盡快為您處理！'); 
