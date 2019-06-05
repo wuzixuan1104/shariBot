@@ -5,6 +5,11 @@ use pimax\Messages\Message;
 use pimax\Messages\ImageMessage;
 use pimax\Messages\SenderAction;
 
+// use pimax\Messages\StructuredMessage;
+// use pimax\Messages\MessageElement;
+// use pimax\Messages\MessageButton;
+// use pimax\Messages\QuickReplyButton;
+
 // use pimax\Menu\MenuItem;
 // use pimax\Menu\LocalizedMenu;
 Load::lib('fb/Menu.php');
@@ -45,6 +50,32 @@ class Fb extends ApiController {
 
       switch ($logClass) {
         case 'M\FbText':
+          if ($logModel->text == 'menu') {
+            // self::$bot->send(new StructuredMessage($this->speaker->sid,
+            //     StructuredMessage::TYPE_GENERIC,
+            //     [
+            //         'elements' => [
+            //             new MessageElement("First item", "Item description", "", [
+            //                 new MessageButton(MessageButton::TYPE_POSTBACK, 'First button'),
+            //                 new MessageButton(MessageButton::TYPE_WEB, 'Web link', 'http://facebook.com')
+            //             ]),
+            //             new MessageElement("Second item", "Item description", "", [
+            //                 new MessageButton(MessageButton::TYPE_POSTBACK, 'First button'),
+            //                 new MessageButton(MessageButton::TYPE_POSTBACK, 'Second button')
+            //             ]),
+            //             new MessageElement("Third item", "Item description", "", [
+            //                 new MessageButton(MessageButton::TYPE_POSTBACK, 'First button'),
+            //                 new MessageButton(MessageButton::TYPE_POSTBACK, 'Second button')
+            //             ])
+            //         ]
+            //     ],
+            //     [ 
+            //         new QuickReplyButton(QuickReplyButton::TYPE_TEXT, 'QR button','PAYLOAD')
+            //     ]
+            // ));
+            return;
+          }
+
           if ($isSys = $logModel->checkSysTxt())
             continue;
 

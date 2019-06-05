@@ -7,7 +7,8 @@ class Postback {
   public static function order($logModel, $source) {
     //quickSolve 選單應該在明細的時候才出現，這邊只做測試
     $msg = [];
-    array_push($msg, new Message($source->sid, '目前尚無訂單資訊！'));
+    // array_push($msg, new Message($source->sid, '目前尚無訂單資訊！'));
+    array_push($msg, Menu::order($source));
 
     if (get_class($logModel) == 'M\FbQuick') 
       array_push($msg, Menu::quickSolve($logModel->id, $source));
