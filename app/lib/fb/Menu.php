@@ -21,9 +21,7 @@ class Menu {
   public static function order() {
     return Message::create()->struct(Struct::TYPE_LIST, [
       'elements' => [
-        El::msgEl('訂單 - 20140922001', '成立日期：2019-01-02 11:23', '', [
-          El::msgBtn(ElMsgBtn::TYPE_POSTBACK, '查看明細', 'POSTBACK')
-        ]),
+        El::msgEl('訂單列表', '歷史訂單列表', Url::base('/asset/img/orderlist.png')),
         El::msgEl('訂單 - 20140922001', '成立日期：2019-01-02 11:23', '', [
           El::msgBtn(ElMsgBtn::TYPE_POSTBACK, '查看明細', 'POSTBACK')
         ]),

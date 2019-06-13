@@ -106,7 +106,7 @@ class Message extends FbMessage {
     $this->msg = new FbQuickReply($this->recipient, $text, $quick_replies, $tag, $notification_type, $messaging_type);
     return $this;
   }
-  public function struct($type, $data, $top = Struct::TOP_ELEMENT_COMPACT, $quick_replies = [], $tag = null, $notification_type = parent::NOTIFY_REGULAR, $messaging_type = parent::TYPE_RESPONSE) {
+  public function struct($type, $data, $top = Struct::TOP_ELEMENT_LARGE, $quick_replies = [], $tag = null, $notification_type = parent::NOTIFY_REGULAR, $messaging_type = parent::TYPE_RESPONSE) {
     $this->msg = new Struct($this->recipient, $type, $data, $quick_replies, $tag, $notification_type, $messaging_type);
     $this->msg->setTopElementStyle($top);
     return $this;
@@ -114,7 +114,7 @@ class Message extends FbMessage {
 }
 
 class Struct extends FbStructuredMessage {
-  const TOP_ELEMENT_TALL = 'tall';
+  const TOP_ELEMENT_LARGE = 'large';
   const TOP_ELEMENT_COMPACT = 'compact';
 
   public function __construct($recipient, $type, $data, $quick_replies = [], $tag = null, $notification_type = parent::NOTIFY_REGULAR, $messaging_type = parent::TYPE_RESPONSE) {
