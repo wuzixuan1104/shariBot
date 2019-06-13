@@ -4,8 +4,10 @@ namespace M;
 
 defined('MAPLE') || exit('此檔案不允許讀取！');
 
-use pimax\Messages\Message;
+// use pimax\Messages\Message;
+use Fbbot\Message;
 
+\Load::lib('Fbbot.php');
 \Load::lib('Curl.php');
 
 class FbAccountLink extends Model {
@@ -33,7 +35,8 @@ class FbAccountLink extends Model {
       return \Menu::accountLink($speaker);
     // } 
     
-    return new \Message($speaker->sid, '您的 Line 帳號發生問題，請與客服進一步聯絡！');
+    return Message::create()->text('您的 Line 帳號發生問題，請與客服進一步聯絡！');
+    // return new \Message($speaker->sid, '您的 Line 帳號發生問題，請與客服進一步聯絡！');
 
   }
 

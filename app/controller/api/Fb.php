@@ -1,43 +1,28 @@
 <?php defined('MAPLE') || exit('此檔案不允許讀取！');
 
-use pimax\FbBotApp;
-use pimax\Messages\Message;
-use pimax\Messages\ImageMessage;
-use pimax\Messages\SenderAction;
+use Fbbot\App;
+use Fbbot\Message;
 
+Load::lib('Fbbot.php');
 Load::lib('fb/Menu.php');
 
 class Fb extends ApiController {
-  static $bot = null;
-  public $data = [];
-  public $speaker = null;
-
   public function __construct() {
     parent::__construct();
-
-    if (Router::methodName() == 'webhook') {
-      self::$bot = new FbBotApp(config('fb', 'accessToken'));
-      $posts = json_decode(file_get_contents('php://input'), true, 512, JSON_BIGINT_AS_STRING);
-      ($this->data = $posts['entry'][0]['messaging']) || error('發生錯誤！');
-    }
   }
 
   public function webhook() {
-    foreach ($this->data as $event) {
-      Log::info($event);
+    foreach (App::events() as $event) {
 
-      if (isset($event['delivery']))
-        continue;
-
-      $this->speaker = \M\FbSource::speakerByEvent($event, self::$bot);
-      if (!$logModel = $this->speaker->getLogModelByEvent($event))
+      $speaker = \M\FbSource::speakerByEvent($event);
+      if (!$logModel = $speaker->getLogModelByEvent($event))
         continue;
 
       $logClass = get_class($logModel);
 
       // 檢查是否已綁定會員帳號
-      if ($msg = \M\FbAccountLink::check($this->speaker, $logClass)) {
-        $this->send($msg);
+      if ($msg = \M\FbAccountLink::check($speaker, $logClass)) {
+        $msg->push($speaker);
         continue;
       }
 
@@ -46,16 +31,15 @@ class Fb extends ApiController {
           if ($isSys = $logModel->checkSysTxt())
             continue;
 
-          if (!\M\FbWait::setTimeStamp($this->speaker)) 
-            $this->send(new Message($this->speaker->sid, \M\FbWait::MSG));
+          if (!\M\FbWait::setTimeStamp($speaker)) 
+            Message::create()->text(\M\FbWait::MSG)->push($speaker);
 
-          if (strstr($logModel->text, '訂單') && $msg = Menu::quickOrder($this->speaker))
-            $this->send($msg); 
+          if (strstr($logModel->text, '訂單') && $msg = Menu::quickOrder($speaker))
+            $msg->push($speaker);
 
           break;
 
         case 'M\FbPostback':
-        case 'M\FbQuick':
           $params = $logModel->payload;
           if (!($params && ($params = json_decode($params, true))))
             continue;
@@ -64,28 +48,17 @@ class Fb extends ApiController {
 
           Load::lib('fb/Postback.php');
           if (!($method && method_exists('Postback', $method))) {
-            $this->send(new Message($logModel->senderId, '工程師還沒有設定相對應的功能！'));
+            Message::create()->text('工程師還沒有設定相對應的功能！')->push($speaker);
             continue;
           }
 
-          in_array($method, ['order', 'orderDetail']) && array_push($params, $logModel);
-          array_push($params, $this->speaker);
-
           if ($msg = call_user_func_array(['Postback', $method], $params))
-            $this->send($msg);
+            $msg->push($speaker);
+
 
           break;
         case 'M\FbAttach':
-          $this->send(new ImageMessage($logModel->senderId, $logModel->detail->url));
-          break;
-
-        case 'M\FbAccountLink':
-          if ($logModel->status == \M\FbAccountLink::STATUS_LINKED) {
-            // Message::pushMulTo($speaker, Menu::bindSuccess());
-
-            continue;
-          }
-          // Menu::bindFail()->pushTo($speaker);
+          Message::create()->image($logModel->detail->url)->push($speaker);
           break;
       }
     }
@@ -105,16 +78,6 @@ class Fb extends ApiController {
       } else {
         Log::info('verify failed !'); 
       }
-    }
-  }
-
-  private function send($msg) {
-    !is_array($msg) && ($msgs[] = $msg) || ($msgs = $msg);
-
-    foreach ($msgs as $msg) {
-      self::$bot->send(new SenderAction($this->speaker->sid, SenderAction::ACTION_TYPING_ON));
-      self::$bot->send($msg);
-      self::$bot->send(new SenderAction($this->speaker->sid, SenderAction::ACTION_TYPING_OFF));
     }
   }
 }

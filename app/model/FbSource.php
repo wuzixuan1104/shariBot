@@ -4,8 +4,11 @@ namespace M;
 
 defined('MAPLE') || exit('此檔案不允許讀取！');
 
-use pimax\Menu\MenuItem;
-use pimax\Menu\LocalizedMenu;
+use \Fbbot\Message;
+use \Fbbot\App;
+use \Fbbot\El;
+
+\Load::lib('Fbbot.php');
 
 class FbSource extends Model {
   // static $hasOne = [];
@@ -18,10 +21,10 @@ class FbSource extends Model {
 
   // static $uploaders = [];
 
-  const MENU_VERSION = 1;
+  const MENU_VERSION = 2;
 
-  public static function speakerByEvent($event, $bot) {
-    if (!$user = $bot->userProfile($event['sender']['id']))
+  public static function speakerByEvent($event) {
+    if (!$user = App::bot()->userProfile($event['sender']['id']))
       return null;
 
     $params = [
@@ -34,23 +37,23 @@ class FbSource extends Model {
       if (!transaction(function() use (&$source, $params) { return $source = FbSource::create($params); }))
         return null;
 
-    $source->updateMenu($bot);
+    // $source->updateMenu();
 
     return $source;
   }
 
-  public function updateMenu($bot) {
+  public function updateMenu() {
     if (!($this->token && $this->menuVersion != self::MENU_VERSION))
       return;
 
     \Log::info('set menu start');
-    $bot->deletePersistentMenu();
-    $bot->setPersistentMenu([
-        new LocalizedMenu('default', false, [
-            new MenuItem(MenuItem::TYPE_NESTED, '點我「 查詢訂單 」', [
-                new MenuItem(MenuItem::TYPE_POSTBACK, '歷年訂單查詢', json_encode(['order']))
-            ])
+    App::bot()->deletePersistentMenu();
+    App::bot()->setPersistentMenu([
+      El::localize('default', false, [
+        El::menuItem(\Fbbot\ElMenuItem::TYPE_NESTED, '點我「 查詢訂單 」', [
+          El::menuItem(\Fbbot\ElMenuItem::TYPE_POSTBACK, '歷年訂單查詢', json_encode(['order']))
         ])
+      ])
     ]);
     \Log::info('set menu end');
 
